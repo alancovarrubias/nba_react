@@ -1,0 +1,2 @@
+class GameDate < ApplicationRecord
+end
