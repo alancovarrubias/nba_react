@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170905020040) do
 
   create_table "game_dates", force: :cascade do |t|
     t.integer "season_id"
+    t.date    "date"
     t.index ["season_id"], name: "index_game_dates_on_season_id"
   end
 

@@ -9,8 +9,8 @@
 module Database
   # (2014..2016).reverse_each do |year| 
   year = 2016
-  # Builder.new(year).run
+  Builder.new(year).run
   # GameStatBuilder.new(year).run
-  QuarterStatBuilder.new(year).run
+  # QuarterStatBuilder.new(year).run
   # end
 end

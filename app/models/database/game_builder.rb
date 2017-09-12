@@ -1,6 +1,7 @@
 module Database
   class GameBuilder < Builder
     ROW_SIZE = 4
+
     def run
       games = game_data.each do |data|
         Game.find_or_create_by(data)
