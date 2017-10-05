@@ -1,33 +1,20 @@
 import React from 'react';
+import Layout from '../layouts/Main';
+import GameTable from './index/GameTable';
 
-const TableRow = ({ game }) => { 
-  return (
-      <tr>
-        <td>{game.id}</td>
-        <td>{game.away_team_id}</td>
-        <td>{game.home_team_id}</td>
-      </tr>
-    );
+const PageBody = ({ games }) => {
+  return <GameTable games={games} />;
 }
 
-const Index = ({ games }) => {
-  let tableRows = games.map((game) => {
-    return <TableRow key={game.id} game={game} />
-  });
-  return (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Away Team</th>
-              <th>Home Team</th>
-            </tr>
-          </thead>
-          <tbody>
-            { tableRows }
-          </tbody>
-        </table>
-      );
+const PageHeader = ({ season }) => {
+  return <h1>{ season.year } Games</h1>;
+}
+
+const Index = ({ season, games }) => {
+  let head = <PageHeader season={season} />;
+  let body = <PageBody games={games} />;
+  return <Layout head={head} body={body} />;
 }
 
 export default Index;
+

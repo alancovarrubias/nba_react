@@ -1,8 +1,9 @@
 class Stat < ApplicationRecord
-  STATS = [:sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
+  STATS = [:id, :sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
   include PlayerStats
   belongs_to :statable, polymorphic: true
   belongs_to :intervalable, polymorphic: true
+  belongs_to :player, -> { where(statables: {statable_type: "Player"}) }, foreign_key: "statable_id" 
 
   def player
     @player ||= statable if statable_type == "Player"
@@ -26,7 +27,9 @@ class Stat < ApplicationRecord
   end
 
   def stat_hash
-    Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| STATS.include?(key)}]
+    hash = Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| STATS.include?(key)}]
+    hash[:name] = self.name
+    hash
   end
 
   def mp
@@ -40,6 +43,6 @@ class Stat < ApplicationRecord
   end
 
   def method_missing(name, *args, &block)
-    intervalable.send(name, *args, &block)
+    statable.send(name, *args, &block)
   end
 end

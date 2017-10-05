@@ -5,24 +5,28 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      season: undefined,
       games: []
     }
   }
 
   componentDidMount() {
-    window.fetch('api/games')
+    let seasonId = this.props.location.state.seasonId;
+    window.fetch(`api/games?seasonId=${seasonId}`)
       .then(response => response.json())
       .then(json => {
         this.setState({
-          games: json
+          season: json.season,
+          games: json.games
         });
       })
       .catch(error => console.log(error))
   }
 
   render() {
+    let season = this.state.season;
     let games = this.state.games;
-    return (<GamesIndex games={games} />);
+    return season ? <GamesIndex season={season} games={games} /> : null;
   }
 }
 

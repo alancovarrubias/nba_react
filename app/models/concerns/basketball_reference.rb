@@ -1,4 +1,5 @@
 module BasketballReference
+  require 'open-uri'
   def basketball_reference(path)
     url = File.join("http://www.basketball-reference.com", path)
     puts url
