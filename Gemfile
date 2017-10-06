@@ -38,7 +38,10 @@ group :development do
   gem 'foreman', '~> 0.82.0'
 end
 
-gem 'sqlite3'
+group :production do
+  gem 'pg'
+end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
