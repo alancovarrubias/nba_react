@@ -152,7 +152,7 @@ module Database
     def reset_stats
       @stats = Hash[@stats.map do |idstr, stat|
         id = stat[:player_id]
-        stat = Stat.new.stat_hash
+        stat = Stat.new.stat_container
         stat[:player_id] = id
         stat[:time] = 0
         stat[:starter] = false

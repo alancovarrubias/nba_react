@@ -11,7 +11,7 @@ module Database
         doc = basketball_reference("/boxscores/#{game.url}.html")
         game.teams.each do |team|
           abbr = team.abbr.downcase
-          data = doc.css("#box_#{abbr}_basic .right , #box_#{abbr}_basic .left").to_a
+          data = doc.css("#box_#{abbr}_basic tbody .right , #box_#{abbr}_basic tbody .left").to_a
           rows = create_rows(data)
           stats = create_stats(team, period, rows)
         end
@@ -37,18 +37,18 @@ module Database
       def create_rows(data)
         rows = []
         row_num = 0
-        row_size = data[20].text == "+/-" ? 21 : 20
+        row_size = data[20].name == "td" ? 21 : 20
         until data.empty?
           row_num += 1
-          size = data[1].name == "td" || header?(data) ? row_size : 1
+          if data[0].text == "+/-"
+            data.shift(1) 
+            next
+          end
+          size = !data[1] || data[1].name == "td" ? row_size : 1
           row = data.shift(size)
-          rows << row unless header?(row)
+          rows << row
         end
         return rows
-      end
-
-      def header?(row)
-        ["Starters", "Reserves", "Team Totals"].include?(row[0].text)
       end
   end
 end

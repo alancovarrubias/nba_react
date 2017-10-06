@@ -12,7 +12,7 @@ const Index = ({ seasons }) => {
 }
 
 const PageHeader = () => {
-  return <h1>MLB Seasons</h1>;
+  return <h1>NBA Seasons</h1>;
 }
 
 const PageBody = ({ seasons }) => {

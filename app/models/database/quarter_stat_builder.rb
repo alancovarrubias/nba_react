@@ -21,7 +21,7 @@ module Database
         { id: player.id, idstr: player.idstr, team: player.team }
       end
       return Hash[player_id_hashes.map do |id_hash|
-        stat = Stat.new.stat_hash
+        stat = Stat.new.stat_container
         stat[:time] = 0
         stat[:starter] = false
         stat[:player_id] = id_hash[:id]
@@ -63,9 +63,9 @@ module Database
     end
 
     def new_team_data(player_stats, team, period)
-      team_data = Stat.new.stat_hash
+      team_data = Stat.new.stat_container
       player_stats.each do |player_stat|
-        player_data = player_stat.stat_hash
+        player_data = player_stat.stat_container
         player_data.each do |key, value|
           team_data[key] += value
         end

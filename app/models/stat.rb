@@ -1,5 +1,6 @@
 class Stat < ApplicationRecord
   STATS = [:id, :sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
+  STAT_CONTAINER = [:sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
   include PlayerStats
   belongs_to :statable, polymorphic: true
   belongs_to :intervalable, polymorphic: true
@@ -24,6 +25,10 @@ class Stat < ApplicationRecord
 
   def opp_stat
     @opp_stat ||= Stat.find_by(intervalable: intervalable, statable: opp)
+  end
+
+  def stat_container
+    Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| STAT_CONTAINER.include?(key)}]
   end
 
   def stat_hash
