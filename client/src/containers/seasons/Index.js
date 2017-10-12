@@ -11,7 +11,7 @@ class Index extends Component {
 
   componentDidMount() {
     let url = `http://localhost:3000/api/seasons`;
-    window.fetch(url, { mode: 'cors' })
+    window.fetch(url, { mode: 'no-cors' })
       .then(response => response.json())
       .then(json => {
         this.setState({
