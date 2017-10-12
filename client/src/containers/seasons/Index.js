@@ -10,7 +10,7 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    let url = `http://104.131.184.150:3000/api/seasons`;
+    let url = `http://localhost:3000/api/seasons`;
     window.fetch(url)
       .then(response => response.json())
       .then(json => {
