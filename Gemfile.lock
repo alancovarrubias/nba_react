@@ -213,7 +213,7 @@ DEPENDENCIES
   foreman (~> 0.82.0)
   inherited_resources!
   listen (~> 3.0.5)
-  pg
+  pg (~> 0.18)
   puma (~> 3.0)
   rails (~> 5.0.5)
   spring
