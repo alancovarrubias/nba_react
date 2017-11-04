@@ -1,18 +1,14 @@
 module PlayerStats
-
-
-  # might be wrong, checkr
   def fg_part
-    fg_part = fgm * (1.0 - 0.5 * (pts - ftm)/(2.0 * fga)) * q_ast
-    return fg_part
+    return self.fgm * (1.0 - 0.5 * (self.pts - self.ftm)/(2.0 * self.fga)) * q_ast
   end
 
   def ft_part
-    (1 - (1 - ft_percent) ** 2) * 0.4 * self.fta
+    return (1 - (1 - ft_percent) ** 2) * 0.4 * self.fta
   end
 
   def ast_part
-    0.5 * ((team_stat.pts - team_stat.ftm) - (self.pts - self.ftm)) / (2.0 * (team_stat.fga - self.fga)) * self.ast
+    return 0.5 * ((team_stat.pts - team_stat.ftm) - (self.pts - self.ftm)) / (2.0 * (team_stat.fga - self.fga)) * self.ast
   end
 
   def orb_part
@@ -20,7 +16,6 @@ module PlayerStats
   end
 
   # Possessions
-
   def fgx_poss
     (fga - fgm) * (1.0 - 1.07 * team_stat.orb_percent)
   end

@@ -14,7 +14,7 @@ module Database
     end
 
     def run
-      [SeasonBuilder, TeamBuilder, GameBuilder, PlayerBuilder, GameStatBuilder, QuarterStatBuilder].each do |klass|
+      [SeasonBuilder, TeamBuilder, GameBuilder, PlayerBuilder, GameStatBuilder, TeamStatBuilder].each do |klass|
         builder = klass.new(year)
         builder.run
       end

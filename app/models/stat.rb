@@ -4,7 +4,18 @@ class Stat < ApplicationRecord
   include PlayerStats
   belongs_to :statable, polymorphic: true
   belongs_to :intervalable, polymorphic: true
-  belongs_to :player, -> { where(statables: {statable_type: "Player"}) }, foreign_key: "statable_id" 
+
+  def initialize
+    @stat = Stats::Players.new(self, team, opp)
+  end
+
+  def ortg
+    @stat.ortg
+  end
+
+  def drtg
+    @stat.drtg
+  end
 
   def player
     @player ||= statable if statable_type == "Player"
@@ -37,6 +48,10 @@ class Stat < ApplicationRecord
     hash
   end
 
+  def self.stat_hash
+    Hash[STAT_CONTAINER.map {|stat| [stat, 0]}]
+  end
+
   def mp
     sp/60.0
   end
@@ -45,9 +60,5 @@ class Stat < ApplicationRecord
     minutes = sp/60
     seconds = "#{sp%60}".rjust(2, "0")
     "#{minutes}:#{seconds}"
-  end
-
-  def method_missing(name, *args, &block)
-    statable.send(name, *args, &block)
   end
 end
