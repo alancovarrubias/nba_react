@@ -1,21 +1,8 @@
 class Stat < ApplicationRecord
   STATS = [:id, :sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
   STAT_CONTAINER = [:sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
-  include PlayerStats
   belongs_to :statable, polymorphic: true
   belongs_to :intervalable, polymorphic: true
-
-  def initialize
-    @stat = Stats::Players.new(self, team, opp)
-  end
-
-  def ortg
-    @stat.ortg
-  end
-
-  def drtg
-    @stat.drtg
-  end
 
   def player
     @player ||= statable if statable_type == "Player"
@@ -36,6 +23,13 @@ class Stat < ApplicationRecord
 
   def opp_stat
     @opp_stat ||= Stat.find_by(intervalable: intervalable, statable: opp)
+  end
+
+  def method_missing(method, *args, &block)
+    @player_stat ||= Stats::Player.new(self, team_stat, opp_stat) if statable_type == "Player"
+    @team_stat ||= Stats::Team.new(self, opp_stat) if statable_type == "Team"
+    return @player_stat.send(method, *args) if statable_type == "Player"
+    return @team_stat.send(method, *args)  if statable_type == "Team"
   end
 
   def stat_container
