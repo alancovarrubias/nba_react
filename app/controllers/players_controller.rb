@@ -4,7 +4,6 @@ class PlayersController < ApiController
   # GET /players
   def index
     @players = Player.all
-
     render json: @players
   end
 
@@ -16,7 +15,6 @@ class PlayersController < ApiController
   # POST /players
   def create
     @player = Player.new(player_params)
-
     if @player.save
       render json: @player, status: :created, location: @player
     else

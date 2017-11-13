@@ -19,6 +19,8 @@ const TeamHeader = () => {
           <th>TOV</th>
           <th>PF</th>
           <th>PTS</th>
+          <th>ORTG</th>
+          <th>DRTG</th>
         </tr>
       );
 }

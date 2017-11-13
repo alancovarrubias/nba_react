@@ -19,6 +19,8 @@ const TeamRow = ({ player }) => {
           <td>{player.tov}</td>
           <td>{player.pf}</td>
           <td>{player.pts}</td>
+          <td>{player.ortg.toFixed(2)}</td>
+          <td>{player.drtg.toFixed(2)}</td>
         </tr>
       );
 }
