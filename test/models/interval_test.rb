@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BetTest < ActiveSupport::TestCase
+class IntervalTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

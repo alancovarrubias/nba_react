@@ -1,5 +1,4 @@
 class Period < ApplicationRecord
-  has_many :bets, dependent: :destroy
   has_many :stats, -> { includes(:statable) }, as: :intervalable, dependent: :destroy
   belongs_to :game
   def player_stats
