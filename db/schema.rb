@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905020040) do
+ActiveRecord::Schema.define(version: 20171122061942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,9 @@ ActiveRecord::Schema.define(version: 20170905020040) do
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "bets", force: :cascade do |t|
   end
 
   create_table "game_dates", force: :cascade do |t|
@@ -85,32 +88,37 @@ ActiveRecord::Schema.define(version: 20170905020040) do
     t.integer "year"
   end
 
+  create_table "stat_joins", force: :cascade do |t|
+    t.string  "model_type"
+    t.integer "model_id"
+    t.string  "interval_type"
+    t.integer "interval_id"
+    t.index ["interval_type", "interval_id"], name: "index_stat_joins_on_interval_type_and_interval_id", using: :btree
+    t.index ["model_type", "model_id"], name: "index_stat_joins_on_model_type_and_model_id", using: :btree
+  end
+
   create_table "stats", force: :cascade do |t|
-    t.string  "statable_type"
-    t.integer "statable_id"
-    t.string  "intervalable_type"
-    t.integer "intervalable_id"
+    t.integer "stat_join_id"
     t.boolean "starter"
-    t.integer "sp",                default: 0
-    t.integer "fgm",               default: 0
-    t.integer "fga",               default: 0
-    t.integer "thpa",              default: 0
-    t.integer "thpm",              default: 0
-    t.integer "fta",               default: 0
-    t.integer "ftm",               default: 0
-    t.integer "orb",               default: 0
-    t.integer "drb",               default: 0
-    t.integer "ast",               default: 0
-    t.integer "stl",               default: 0
-    t.integer "blk",               default: 0
-    t.integer "tov",               default: 0
-    t.integer "pf",                default: 0
-    t.integer "pts",               default: 0
-    t.float   "pace",              default: 0.0
-    t.float   "ortg",              default: 0.0
-    t.float   "drtg",              default: 0.0
-    t.index ["intervalable_type", "intervalable_id"], name: "index_stats_on_intervalable_type_and_intervalable_id", using: :btree
-    t.index ["statable_type", "statable_id"], name: "index_stats_on_statable_type_and_statable_id", using: :btree
+    t.integer "sp",           default: 0
+    t.integer "fgm",          default: 0
+    t.integer "fga",          default: 0
+    t.integer "thpa",         default: 0
+    t.integer "thpm",         default: 0
+    t.integer "fta",          default: 0
+    t.integer "ftm",          default: 0
+    t.integer "orb",          default: 0
+    t.integer "drb",          default: 0
+    t.integer "ast",          default: 0
+    t.integer "stl",          default: 0
+    t.integer "blk",          default: 0
+    t.integer "tov",          default: 0
+    t.integer "pf",           default: 0
+    t.integer "pts",          default: 0
+    t.float   "pace",         default: 0.0
+    t.float   "ortg",         default: 0.0
+    t.float   "drtg",         default: 0.0
+    t.index ["stat_join_id"], name: "index_stats_on_stat_join_id", using: :btree
   end
 
   create_table "teams", force: :cascade do |t|

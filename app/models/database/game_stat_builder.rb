@@ -21,8 +21,9 @@ module Database
         rows = rows.each_with_index.map do |row, index|
           player_stats = player_attr(row[0]).merge(season: season, team: team)
           player = Player.find_by(player_stats)
+          stat_join = StatJoin.find_or_create_by(model: player, interval: period)
           starter = index <= 6
-          stat = Stat.find_or_create_by(intervalable: period, statable: player, starter: starter)
+          stat = Stat.find_or_create_by(stat_join: stat_join, starter: starter)
           next if row.size == 1
           stat_data = ROW_INDICES.map do |stat, index|
             text = row[index].text

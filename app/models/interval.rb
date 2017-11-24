@@ -1,2 +1,0 @@
-class Interval < ApplicationRecord
-end

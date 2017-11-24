@@ -1,15 +1,14 @@
 class Stat < ApplicationRecord
   STATS = [:id, :sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts, :ortg, :drtg]
   STAT_CONTAINER = [:sp, :fgm, :fga, :thpm, :thpa, :ftm, :fta, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts]
-  belongs_to :statable, polymorphic: true
-  belongs_to :intervalable, polymorphic: true
+  belongs_to :stat_join
 
   def player
     @player ||= statable if statable_type == "Player"
   end
 
   def name
-    player.name
+    statable_type == "Team" ? team.name : player.name
   end
 
   def team

@@ -1,10 +1,47 @@
 class Game < ApplicationRecord
-  include GameStats
   belongs_to :season
   belongs_to :game_date
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
   has_many :periods, dependent: :destroy
+
+  def away_season_stat(quarter)
+    return season_stat(self.away_team, quarter)
+  end
+
+  def home_season_stat(quarter)
+    return season_stat(self.home_team, quarter)
+  end
+
+  def season_stat(team, quarter)
+    previous_game = n_game(1, team)
+    season_game = season_game(team)
+    interval = Interval.find_by(quarter: quarter, start_date: season_game.game_date, end_date: previous_game.game_date)
+    return interval && interval.stats.find_by(statable: team)
+  end
+
+  def n_away_stat(n, quarter)
+    return n_team_stat(self.away_team, n, quarter)
+  end
+
+  def n_home_stat(n, quarter)
+    return n_team_stat(self.home_team, n, quarter)
+  end
+
+  def n_team_stat(team, n, quarter)
+    first_game = n_game(n, team)
+    last_game = n_game(1, team)
+    interval = Interval.find_by(quarter: quarter, start_date: first_game.game_date, end_date: last_game.game_date)
+    return interval.stats.find_by(games_played: n, statable: team)
+  end
+
+  def season_game(team)
+    return Game.where("(away_team_id = #{team.id} OR home_team_id = #{team.id}) AND season_id = #{self.season.id}").order("id").first
+  end
+
+  def n_game(n, team)
+    return Game.where("(away_team_id = #{team.id} OR home_team_id = #{team.id}) AND season_id = #{self.season.id} AND id < #{self.id}").order("id DESC").limit(n).last
+  end
 
   def teams
     return away_team, home_team
