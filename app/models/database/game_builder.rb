@@ -17,8 +17,7 @@ module Database
         rows.map do |row|
           date = parse_date(row)
           away_team, home_team = parse_teams(row)
-          game_date = GameDate.find_or_create_by(date: date, season: season)
-          {season: season, game_date: game_date, away_team: away_team, home_team: home_team}
+          {season: season, date: date, away_team: away_team, home_team: home_team}
         end
       end
 

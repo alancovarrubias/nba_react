@@ -1,2 +1,2 @@
-Database::Builder.new(2016).run
+Database::TeamStatBuilder.new(2016).run
 

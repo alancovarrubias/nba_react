@@ -1,8 +1,7 @@
 class Player < ApplicationRecord
   belongs_to :team
   belongs_to :season
-  has_many :stats, as: :statable, dependent: :destroy
-  has_many :stat_joins, as: :model
+  has_many :stats, as: :model, dependent: :destroy
   scope :by_minutes, -> { order("stats.sp DESC") }
   include PlayerStats
 

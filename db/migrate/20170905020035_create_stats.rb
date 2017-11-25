@@ -1,9 +1,10 @@
 class CreateStats < ActiveRecord::Migration[5.0]
   def change
     create_table :stats do |t|
-      t.references :stat_join
+      t.references :model, polymorphic: true
+      t.references :interval, polymorphic: true
       t.boolean :starter
-      t.integer :quarter
+      t.integer :period
       t.integer :sp, default: 0
       t.integer :fgm, default: 0
       t.integer :fga, default: 0

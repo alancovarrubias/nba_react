@@ -57,11 +57,10 @@ ActiveRecord::Schema.define(version: 20171122061942) do
 
   create_table "games", force: :cascade do |t|
     t.integer "season_id"
-    t.integer "game_date_id"
     t.integer "away_team_id"
     t.integer "home_team_id"
+    t.date    "date"
     t.index ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
-    t.index ["game_date_id"], name: "index_games_on_game_date_id", using: :btree
     t.index ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
     t.index ["season_id"], name: "index_games_on_season_id", using: :btree
   end
@@ -79,7 +78,6 @@ ActiveRecord::Schema.define(version: 20171122061942) do
     t.string  "abbr"
     t.string  "idstr"
     t.string  "position"
-    t.boolean "starter"
     t.index ["season_id"], name: "index_players_on_season_id", using: :btree
     t.index ["team_id"], name: "index_players_on_team_id", using: :btree
   end
@@ -98,27 +96,32 @@ ActiveRecord::Schema.define(version: 20171122061942) do
   end
 
   create_table "stats", force: :cascade do |t|
-    t.integer "stat_join_id"
+    t.string  "model_type"
+    t.integer "model_id"
+    t.string  "interval_type"
+    t.integer "interval_id"
     t.boolean "starter"
-    t.integer "sp",           default: 0
-    t.integer "fgm",          default: 0
-    t.integer "fga",          default: 0
-    t.integer "thpa",         default: 0
-    t.integer "thpm",         default: 0
-    t.integer "fta",          default: 0
-    t.integer "ftm",          default: 0
-    t.integer "orb",          default: 0
-    t.integer "drb",          default: 0
-    t.integer "ast",          default: 0
-    t.integer "stl",          default: 0
-    t.integer "blk",          default: 0
-    t.integer "tov",          default: 0
-    t.integer "pf",           default: 0
-    t.integer "pts",          default: 0
-    t.float   "pace",         default: 0.0
-    t.float   "ortg",         default: 0.0
-    t.float   "drtg",         default: 0.0
-    t.index ["stat_join_id"], name: "index_stats_on_stat_join_id", using: :btree
+    t.integer "period"
+    t.integer "sp",            default: 0
+    t.integer "fgm",           default: 0
+    t.integer "fga",           default: 0
+    t.integer "thpa",          default: 0
+    t.integer "thpm",          default: 0
+    t.integer "fta",           default: 0
+    t.integer "ftm",           default: 0
+    t.integer "orb",           default: 0
+    t.integer "drb",           default: 0
+    t.integer "ast",           default: 0
+    t.integer "stl",           default: 0
+    t.integer "blk",           default: 0
+    t.integer "tov",           default: 0
+    t.integer "pf",            default: 0
+    t.integer "pts",           default: 0
+    t.float   "pace",          default: 0.0
+    t.float   "ortg",          default: 0.0
+    t.float   "drtg",          default: 0.0
+    t.index ["interval_type", "interval_id"], name: "index_stats_on_interval_type_and_interval_id", using: :btree
+    t.index ["model_type", "model_id"], name: "index_stats_on_model_type_and_model_id", using: :btree
   end
 
   create_table "teams", force: :cascade do |t|

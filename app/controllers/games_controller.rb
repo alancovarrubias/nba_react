@@ -4,12 +4,12 @@ class GamesController < ApiController
   # GET /games
   def index
     @season = Season.find(params[:seasonId])
-    @games = @season.games.includes(:away_team, :home_team, :game_date).map do |game|
+    @games = @season.games.includes(:away_team, :home_team).map do |game|
       hash = {}
       hash[:id] = game.id
       hash[:away_team] = game.away_team.name
       hash[:home_team] = game.home_team.name
-      hash[:date] = game.game_date.date
+      hash[:date] = game.date
       hash
     end
     @season = @season.as_json

@@ -1,9 +1,8 @@
 class Game < ApplicationRecord
   belongs_to :season
-  belongs_to :game_date
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
-  has_many :periods, dependent: :destroy
+  has_many :stats, as: :interval, dependent: :destroy
 
   def away_season_stat(quarter)
     return season_stat(self.away_team, quarter)
@@ -73,9 +72,5 @@ class Game < ApplicationRecord
       period = periods.find_by(quarter: quarter)
       periods.stats.includes(:statable) if period
     end
-  end
-
-  def method_missing(name, *args, &block)
-    game_date.send(name, *args, &block)
   end
 end

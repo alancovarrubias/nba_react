@@ -7,7 +7,6 @@ class CreatePlayers < ActiveRecord::Migration[5.0]
       t.string :abbr
       t.string :idstr
       t.string :position
-      t.boolean :starter
     end
   end
 end

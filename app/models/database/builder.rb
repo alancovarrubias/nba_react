@@ -1,6 +1,6 @@
 module Database
   class Builder
-    attr_reader :year, :season, :teams, :players, :game_dates, :games
+    attr_reader :year, :season, :teams, :players, :games
     include BasketballReference
     def initialize(year)
       @year = year
@@ -8,14 +8,13 @@ module Database
       if @season
         @teams = @season.teams
         @players = @season.players
-        @game_dates = @season.game_dates
         @games = @season.games
       end
     end
 
     def run
       # [SeasonBuilder, TeamBuilder, GameBuilder, PlayerBuilder, GameStatBuilder, TeamStatBuilder, RatingBuilder].each do |klass|
-      [SeasonBuilder, TeamBuilder, GameBuilder, PlayerBuilder, GameStatBuilder].each do |klass|
+      [GameStatBuilder].each do |klass|
         builder = klass.new(year)
         builder.run
       end
