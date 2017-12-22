@@ -3,6 +3,7 @@ class Player < ApplicationRecord
   belongs_to :season
   has_many :stats, as: :model, dependent: :destroy
   scope :by_minutes, -> { order("stats.sp DESC") }
+  default_scope  { includes(:team) }
   include PlayerStats
 
   def stat_hash

@@ -15,7 +15,6 @@ class Show extends Component {
     window.fetch(url)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         this.setState({
           game: json
         });
