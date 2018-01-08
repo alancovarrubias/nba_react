@@ -13,8 +13,4 @@ class Player < ApplicationRecord
   def opponent
     team.opponent
   end
-
-  def predict_ortg(period)
-    stats = Stat.where("statable_id = #{stat.player.id} AND intervalable_type = 'Period' AND intervalable_id IN (?)", period_ids).order("intervalable_id DESC").limit(num)
-  end
 end

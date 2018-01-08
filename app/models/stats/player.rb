@@ -89,8 +89,7 @@ module Stats
       return ft_percent.nan? ? 0.0 : ft_percent
     end
 
-
-    def poss_percent
+    def calc_poss_percent
       player.tot_poss / team.tot_poss
     end
 
@@ -174,50 +173,6 @@ module Stats
 
     def calc_drtg
       team.calc_drtg + 0.2 * (100 * player.def_points_per_sc_poss * (1 - player.stop_percent) - team.calc_drtg)
-    end
-
-    def predict_poss_percent(past_number=10)
-      previous_starters = Starter.where(:alias => player.alias, :quarter => player.quarter).where("id < #{player.id}").order('id DESC').limit(past_number)
-      size = previous_starters.size
-      if size == 0
-        return 0.0
-      end
-      poss_percent = 0
-      previous_starters.each do |starter|
-        var = starter.poss_percent
-        var = 0 if var.nan?
-      end
-      return poss_percent/size
-    end
-
-    def predict_ortg(range=0.05, poss_percent)
-      previous_starters = Starter.where(:alias => player.alias, :quarter => player.quarter).where("id < #{player.id} AND poss_percent > #{player.poss_percent - range} AND poss_percent < #{player.poss_percent + range}").order('id DESC')
-      if previous_starters.size == 0
-        return 90.0
-      end
-      stat = Starter.new
-      team = Lineup.new
-      opp = Lineup.new
-      previous_starters.each do |starter|
-        Store.add(stat, starter)
-        Store.add(team, starter.team)
-        Store.add(opp, starter.opp)
-        break if stat.mp > player.team.mp
-      end
-      ortg = stat.ortg
-      return ortg.nan? ? 90.0 : ortg
-    end
-
-    def prediction(past_number=10)
-      percentage = player.predict_poss_percent(past_number)
-      if percentage == nil || percentage.nan?
-        percentage = 0
-      end
-      ortg = player.predict_ortg(0.05, percentage)
-      if ortg == nil || ortg.nan?
-        ortg = 0
-      end
-      return [ortg, percentage]
     end
   end
 end

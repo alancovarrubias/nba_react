@@ -48,6 +48,10 @@ module Stats
       team.orb / (team.orb + opp.drb).to_f
     end
 
+    def calc_poss_percent
+      team.tot_poss / (team.tot_poss + opp.tot_poss)
+    end
+
     def calc_drtg
       100 * (opp.pts / team.tot_poss)
     end

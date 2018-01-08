@@ -23,6 +23,7 @@ class CreateStats < ActiveRecord::Migration[5.0]
       t.integer :tov, default: 0
       t.integer :pf, default: 0
       t.integer :pts, default: 0
+      t.float :poss_percent, default: 0
       t.float :pace, default: 0
       t.float :ortg, default: 0
       t.float :drtg, default: 0
