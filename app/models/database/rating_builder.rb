@@ -6,7 +6,7 @@ module Database
 
     def update_stats(game, period)
       puts "Game #{game.id}"
-      game.stats.where(ortg: 0).each do |stat|
+      game.stats.each do |stat|
         puts "Stat #{stat.id}"
         ortg = stat.calc_ortg
         drtg = stat.calc_drtg

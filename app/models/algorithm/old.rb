@@ -16,12 +16,12 @@ module Algorithm
     end
 
     def predict_team_ortg(stats)
+      # BUG: The ORTG comes outs as nil for some stats
       poss_percent_sum = 0
       predictions = stats.map do |stat|
         poss_percent = self.predict_player_poss_percent(stat)
         poss_percent_sum += poss_percent
-        ortg = self.predict_player_ortg(stat)
-        poss_percent * ortg
+        ortg = self.predict_player_ortg(stat, poss_percent)
       end
       return (predictions.inject(0) {|mem, num| mem + num}) / poss_percent_sum
     end
@@ -38,14 +38,14 @@ module Algorithm
     end
 
     def predict_player_poss_percent(stat)
-      previous_stats = stat.previous_stats.limit(10)
-      poss_percent = previous_stats.map(&:poss_percent).inject(0) { |mem, num| mem + n }
-      return poss_percent/previous_stats.size
+      prev_stats = stat.prev_stats.limit(10)
+      poss_percent = prev_stats.map(&:poss_percent).inject(0) { |mem, num| mem + num }
+      return poss_percent/prev_stats.size
     end
 
-    def predict_player_ortg(stat)
-      previous_stats = stat.previous_ranged_stats(0.05)
-      minutes = previous_stats.map(&:mp)
+    def predict_player_ortg(stat, predicted_poss_percent)
+      prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05)
+      minutes = prev_stats.map(&:mp)
       games_back = 0
       time_played = 0
       minutes.each do |minute|
@@ -53,9 +53,10 @@ module Algorithm
         time_played += minute
         break if time_played > 240.0
       end
-      previous_stats = previous_stats.limit(games_back)
-      stat = Stats::Stat.new(previous_stats)
-      return stat.calc_ortg
+      prev_stats = prev_stats.limit(games_back)
+      stat = Stats::Stat.new(prev_stats)
+      ortg = stat.calc_ortg
+      return ortg
     end
   end
 end

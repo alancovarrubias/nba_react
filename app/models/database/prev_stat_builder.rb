@@ -1,7 +1,7 @@
 module Database
   class PrevStatBuilder < Builder
-    def run(num=nil)
-      games.each { |game| build_stats(game, num, 0) }
+    def run(num=nil, period=0)
+      games.each { |game| build_stats(game, num, period) }
     end
 
     def build_stats(game, num, period)

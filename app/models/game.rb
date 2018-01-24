@@ -9,16 +9,12 @@ class Game < ApplicationRecord
   fields = ["away", "home"]
   models = ["player", "team"]
   periods = [0]
-  types = ["game", "season", "prev"]
-  
+  types = ["game", "season"]
+
   def teams
     return [self.away_team, self.home_team]
   end
-
-  def prev_games
-    return Game.where("date < ?", self.date).order(date: :desc)
-  end
-
+  
   fields.each do |field|
     define_method("prev_#{field}_games") do
       team_id = self.send("#{field}_team_id")
@@ -26,41 +22,41 @@ class Game < ApplicationRecord
     end
   end
 
-  periods.each do |period|
-    models.each do |model|
-      query_hash = { model_type: model.capitalize, period: period }
-      define_method("#{model}_stats_#{period}") do
-        return self.stats.where(query_hash)
+  def prev_games
+    return Game.where(season: season).where("date < ?", self.date).order(date: :desc)
+  end
+
+  def game_stats
+    stats.where(games_back: nil, season_stat: false)
+  end
+
+  def season_stats
+    stats.where(season_stat: true)
+  end
+
+  def prev_stats(num)
+    stats.where(season_stat: false, games_back: num)
+  end
+
+  models.each do |model|
+    query = { model_type: model.capitalize }
+    types.each do |type|
+      define_method("#{type}_#{model}_stats") do |period=0|
+        return self.send("#{type}_stats").where(query.merge({ period: period }))
       end
-      define_method("#{model}_game_stats_#{period}") do
-        return self.stats.where(query_hash.merge({ games_back: nil, season_stat: false }))
-      end
-      define_method("#{model}_season_stats_#{period}") do
-        return self.stats.where(query_hash.merge({ season_stat: true }))
-      end
-      define_method("#{model}_prev_stats_#{period}") do |games_back|
-        return self.stats.where(query_hash.merge({ season_stat: false, games_back: games_back }))
+      define_method("prev_#{model}_stats") do |num, period=0|
+        return self.send("prev_stats", num).where(query.merge({ period: period }))
       end
       fields.each do |field|
-        define_method("#{field}_#{model}_stats_#{period}") do
-          team = self.send("#{field}_team")
-          return model == "player" ? stats.select{|stat| stat.team == team} : stats.where(model: team)
+        define_method("#{type}_#{field}_#{model}_stats") do |period=0|
+          stats = self.send("#{type}_#{model}_stats")
+          team_id = self.send("#{field}_team_id")
+          return model == "player" ? stats.select { |stat| stat.team_id == team_id } : stats.where(model_id: team_id)
         end
-        stat = model == "player" ? "stats" : "stat"
-        types.each do |type|
-          if type == "prev"
-            define_method("#{field}_#{model}_#{type}_#{stat}_#{period}") do |games_back|
-              stats = self.send("#{model}_#{type}_stats_#{period}", games_back)
-              team = self.send("#{field}_team")
-              return model == "player" ? stats.select{|stat| stat.team == team} : stats.find_by(model: team)
-            end
-          else
-            define_method("#{field}_#{model}_#{type}_#{stat}_#{period}") do
-              stats = self.send("#{model}_#{type}_stats_#{period}")
-              team = self.send("#{field}_team")
-              return model == "player" ? stats.select{|stat| stat.team == team} : stats.find_by(model: team)
-            end
-          end
+        define_method("prev_#{field}_#{model}_stats") do |num, period=0|
+          stats = self.send("prev_#{model}_stats", num, period)
+          team_id = self.send("#{field}_team_id")
+          return model == "player" ? stats.select { |stat| stat.team_id == team_id } : stats.where(model_id: team_id)
         end
       end
     end
@@ -79,6 +75,7 @@ class Game < ApplicationRecord
   end
 
   def method_missing(method, *args, &block)
+    self.send(method[0...-2]) if (method[-1] == "0") # default is zero period
     @game_stat ||= Stats::Game.new(self)
     return @game_stat.send(method, *args)
   end

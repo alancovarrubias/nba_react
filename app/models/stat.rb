@@ -10,25 +10,34 @@ class Stat < ApplicationRecord
   end
 
   def self.build_model(stats)
-    return Stat.new(sum_stats(stats.map(&:stat_container)))
+    model_type = stats.first.model_type
+    return Stat.new(sum_stats(stats.map(&:stat_container)).merge({ model_type: model_type }))
   end
 
   def self.sum_stats(stats)
     return stats.inject(self.stat_hash) { |mem, hash| mem.merge(hash) { |key, old, new| old + new } }
   end
 
-  def previous_ranged_stats(range)
-    return previous_stats.where("poss_percent < #{self.poss_percent + range} OR poss_percent > #{self.poss_percent - range}")
-  end
-
-  def previous_stats
-    return Stat.where(season: self.season, model: self.model).where("game_id < #{self.game_id}").order(game_id: :desc)
-  end
-
-  def similar_stats
-    query_hash = { season: self.season, game: self.game, season_stat: self.season_stat }
-    query_hash.merge!({ games_back: self.games_back }) unless self.season_stat
+  def stats
+    query_hash = { season: season, season_stat: season_stat }
+    query_hash.merge!({ games_back: games_back }) unless season_stat
     return Stat.where(query_hash)
+  end
+
+  def game_stats
+    stats.where(game: game)
+  end
+
+  def model_stats
+    stats.where(model: model)
+  end
+
+  def prev_stats
+    model_stats.where("game_id < #{game_id}").order(game_id: :desc)
+  end
+
+  def prev_ranged_stats(poss_percent, range)
+    prev_stats.where("poss_percent < #{poss_percent + range} AND poss_percent > #{poss_percent - range}")
   end
 
   def name
@@ -41,27 +50,22 @@ class Stat < ApplicationRecord
   end
 
   def team
-    @team ||= model_type == "Team" ? model : model.team
+    @team ||= (model_type == "Team") ? model : model.team
     return @team
   end
 
   def opp
-    opp ||= team == game.away_team ? game.home_team : game.away_team if self.game
+    opp ||= (team == game.away_team) ? game.home_team : game.away_team if self.game
   end
 
   def team_stat
-    @team_stat ||= similar_stats.find_by(model: self.team) if self.game
+    @team_stat ||= game_stats.find_by(model: self.team) if self.game
     return @team_stat
   end
 
   def opp_stat
-    @opp_stat ||= similar_stats.find_by(model: self.opp) if self.game
+    @opp_stat ||= game_stats.find_by(model: self.opp) if self.game
     return @opp_stat
-  end
-
-  def prev_stats(num=nil)
-    return Stat.where(season: season, games_back: self.games_back, season_stat: self.season_stat, model: self.model)
-           .where("game_id < #{self.game_id}").order(game_id: :desc).limit(num)
   end
 
   def stat_container
@@ -85,9 +89,8 @@ class Stat < ApplicationRecord
   end
 
   def method_missing(method, *args, &block)
-    @player_stat ||= Stats::Player.new(self, team_stat, opp_stat) if model_type == "Player"
-    @team_stat ||= Stats::Team.new(self, opp_stat) if model_type == "Team"
-    return @player_stat.send(method, *args) if model_type == "Player"
-    return @team_stat.send(method, *args)  if model_type == "Team"
+    @stat_proxy ||= Stats::Player.new(self, team_stat, opp_stat) if model_type == "Player"
+    @stat_proxy ||= Stats::Team.new(self, opp_stat) if model_type == "Team"
+    return @stat_proxy.send(method, *args)
   end
 end
