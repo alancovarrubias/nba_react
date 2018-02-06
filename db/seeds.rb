@@ -1,7 +1,7 @@
 # Database::PrevStatBuilder.new(2016).run
 # Database::PrevStatBuilder.new(2016).run(10)
 # Database::PrevStatBuilder.new(2016).run
-Database::PrevStatBuilder.new(2016).run(10)
+# Database::PrevStatBuilder.new(2016).run(10)
 # Database::RatingBuilder.new(2016).run
 
 =begin
@@ -11,3 +11,5 @@ games.each do |game|
 end
 =end
 
+builder = Database::BetBuilder.new(2016)
+builder.run

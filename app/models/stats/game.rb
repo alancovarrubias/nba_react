@@ -48,7 +48,6 @@ module Stats
       opp_stat.instance_variable_set(:@opp_stat, team_stat)
       player_stat.ortg = player_stat.calc_ortg
       player_stat.drtg = player_stat.calc_drtg
-      player_stat.games_played.
       return player_stat
     end
   end

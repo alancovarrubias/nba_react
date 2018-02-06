@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20171222210549) do
 
   create_table "bets", force: :cascade do |t|
     t.integer "game_id"
-    t.string  "type"
+    t.string  "desc"
     t.integer "period"
     t.float   "score"
     t.index ["game_id"], name: "index_bets_on_game_id", using: :btree

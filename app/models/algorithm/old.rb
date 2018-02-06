@@ -5,13 +5,14 @@ module Algorithm
       @game = game
     end
     def predict_score(games_back)
-      possessions = predict_possessions(games_back)
-      away_player_stats = game.away_player_game_stats_0
-      home_player_stats = game.home_player_game_stats_0
+      puts game.games_back.size
+      possessions = predict_possessions(games_back) / 100
+      away_player_stats = game.game_away_player_stats
+      home_player_stats = game.game_home_player_stats
       away_team_ortg = predict_team_ortg(away_player_stats)
       home_team_ortg = predict_team_ortg(home_player_stats)
-      away_score = away_team_ortg * possessions / 100
-      home_score = home_team_ortg * possessions / 100
+      away_score = away_team_ortg * possessions
+      home_score = home_team_ortg * possessions
       return away_score + home_score
     end
 
@@ -22,18 +23,23 @@ module Algorithm
         poss_percent = self.predict_player_poss_percent(stat)
         poss_percent_sum += poss_percent
         ortg = self.predict_player_ortg(stat, poss_percent)
+        ortg * poss_percent
       end
       return (predictions.inject(0) {|mem, num| mem + num}) / poss_percent_sum
     end
 
     def predict_possessions(games_back)
-      away_team_season = game.away_team_season_stat_0
-      home_team_season = game.home_team_season_stat_0
-      away_team_prev = game.away_team_prev_stat_0(games_back)
-      home_team_prev = game.home_team_prev_stat_0(games_back)
+      away_team_season = game.season_away_team_stat
+      home_team_season = game.season_home_team_stat
+      away_team_season_poss = away_team_season.tot_poss/away_team_season.games_back
+      home_team_season_poss = home_team_season.tot_poss/home_team_season.games_back
+      away_team_prev = game.prev_away_team_stat(games_back)
+      home_team_prev = game.prev_home_team_stat(games_back)
+      away_team_prev_poss = away_team_prev.tot_poss/games_back
+      home_team_prev_poss = home_team_prev.tot_poss/games_back
 
-      away_poss = (away_team_season.tot_poss + away_team_prev.tot_poss) / 2
-      home_poss = (home_team_season.tot_poss + home_team_prev.tot_poss) / 2
+      away_poss = (away_team_season_poss + away_team_prev_poss) / 2
+      home_poss = (home_team_season_poss + home_team_prev_poss) / 2
       return (away_poss + home_poss) / 2
     end
 

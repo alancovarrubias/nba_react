@@ -48,15 +48,16 @@ class Game < ApplicationRecord
         return self.send("prev_stats", num).where(query.merge({ period: period }))
       end
       fields.each do |field|
-        define_method("#{type}_#{field}_#{model}_stats") do |period=0|
+        stat = model == "player" ? "stats" : "stat"
+        define_method("#{type}_#{field}_#{model}_#{stat}") do |period=0|
           stats = self.send("#{type}_#{model}_stats")
           team_id = self.send("#{field}_team_id")
-          return model == "player" ? stats.select { |stat| stat.team_id == team_id } : stats.where(model_id: team_id)
+          return model == "player" ? stats.select { |stat| stat.model.team_id == team_id } : stats.find_by(model_id: team_id)
         end
-        define_method("prev_#{field}_#{model}_stats") do |num, period=0|
+        define_method("prev_#{field}_#{model}_#{stat}") do |num, period=0|
           stats = self.send("prev_#{model}_stats", num, period)
           team_id = self.send("#{field}_team_id")
-          return model == "player" ? stats.select { |stat| stat.team_id == team_id } : stats.where(model_id: team_id)
+          return model == "player" ? stats.select { |stat| stat.model.team_id == team_id } : stats.find_by(model_id: team_id)
         end
       end
     end
@@ -75,7 +76,6 @@ class Game < ApplicationRecord
   end
 
   def method_missing(method, *args, &block)
-    self.send(method[0...-2]) if (method[-1] == "0") # default is zero period
     @game_stat ||= Stats::Game.new(self)
     return @game_stat.send(method, *args)
   end
