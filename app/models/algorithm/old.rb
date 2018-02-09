@@ -5,15 +5,16 @@ module Algorithm
       @game = game
     end
     def predict_score(games_back)
-      puts game.games_back.size
-      possessions = predict_possessions(games_back) / 100
+      return if game.prev_away_games.size < 13 && game.prev_home_games.size < 13
+      puts game.id
+      #possessions = predict_possessions(games_back) / 100
       away_player_stats = game.game_away_player_stats
       home_player_stats = game.game_home_player_stats
       away_team_ortg = predict_team_ortg(away_player_stats)
       home_team_ortg = predict_team_ortg(home_player_stats)
-      away_score = away_team_ortg * possessions
-      home_score = home_team_ortg * possessions
-      return away_score + home_score
+      # away_score = away_team_ortg * possessions
+      # home_score = home_team_ortg * possessions
+      # return away_score + home_score
     end
 
     def predict_team_ortg(stats)
@@ -50,7 +51,7 @@ module Algorithm
     end
 
     def predict_player_ortg(stat, predicted_poss_percent)
-      prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05)
+      prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05).includes(:model, :game, :season)
       minutes = prev_stats.map(&:mp)
       games_back = 0
       time_played = 0

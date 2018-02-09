@@ -2,7 +2,7 @@ class Game < ApplicationRecord
   belongs_to :season
   belongs_to :home_team, class_name: "Team"
   belongs_to :away_team, class_name: "Team"
-  has_many :stats, -> { includes(:season, :game, :model).order(sp: :desc) }, dependent: :destroy
+  has_many :stats, -> { includes(:season, :game, :player, :team).order(sp: :desc) }, dependent: :destroy
   has_many :bets
   default_scope { includes(:away_team, :home_team, :season) }
 
@@ -51,13 +51,13 @@ class Game < ApplicationRecord
         stat = model == "player" ? "stats" : "stat"
         define_method("#{type}_#{field}_#{model}_#{stat}") do |period=0|
           stats = self.send("#{type}_#{model}_stats")
-          team_id = self.send("#{field}_team_id")
-          return model == "player" ? stats.select { |stat| stat.model.team_id == team_id } : stats.find_by(model_id: team_id)
+          team = self.send("#{field}_team_id")
+          return model == "player" ? stats.where(players: { team: team }) : stats.find_by(team: team)
         end
         define_method("prev_#{field}_#{model}_#{stat}") do |num, period=0|
           stats = self.send("prev_#{model}_stats", num, period)
-          team_id = self.send("#{field}_team_id")
-          return model == "player" ? stats.select { |stat| stat.model.team_id == team_id } : stats.find_by(model_id: team_id)
+          team = self.send("#{field}_team")
+          return model == "player" ? stats.where(players: { team: team }) : stats.find_by(team: team)
         end
       end
     end

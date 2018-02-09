@@ -4,6 +4,16 @@ class Stat < ApplicationRecord
   belongs_to :season
   belongs_to :game
   belongs_to :model, polymorphic: true
+  belongs_to :team, -> { includes(:stats).where(stats: { model_type: 'Team' }) }, foreign_key: :model_id
+  belongs_to :player, -> { includes(:stats).where(stats: { model_type: 'Player' }) }, foreign_key: :model_id
+  def player
+    return unless model_type == "Player"
+    super
+  end
+  def team
+    return player.team unless model_type == "Team"
+    super
+  end
 
   def self.stat_hash
     return Hash[STAT_CONTAINER.map {|stat| [stat, 0]}]
@@ -42,16 +52,6 @@ class Stat < ApplicationRecord
 
   def name
     model.name
-  end
-
-  def player
-    @player ||= model if model_type == "Player"
-    return @player
-  end
-
-  def team
-    @team ||= (model_type == "Team") ? model : model.team
-    return @team
   end
 
   def opp
