@@ -11,5 +11,6 @@ games.each do |game|
 end
 =end
 
-builder = Database::BetBuilder.new(2016)
-builder.run
+game = Game.last
+alg = Algorithm::Old.new(game)
+alg.predict_score(10)
