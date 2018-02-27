@@ -6,16 +6,14 @@ module Algorithm
     end
     def predict_score(games_back)
       return if game.prev_away_games.size < 13 && game.prev_home_games.size < 13
-      puts game.id
-      #possessions = predict_possessions(games_back) / 100
-#      away_player_stats = game.game_away_player_stats
-      home_player_stats = game.game_home_player_stats
-      # home_player_stats.prev_stats.limit(10)
-#      away_team_ortg = predict_team_ortg(away_player_stats)
+      possessions = predict_possessions(games_back) / 100
+      away_player_stats = game.game_away_player_stats
+      home_player_stats = game.game_home_player_stats.includes({ player: :team })
+      away_team_ortg = predict_team_ortg(away_player_stats)
       home_team_ortg = predict_team_ortg(home_player_stats)
-      # away_score = away_team_ortg * possessions
-      # home_score = home_team_ortg * possessions
-      # return away_score + home_score
+      away_score = away_team_ortg * possessions
+      home_score = home_team_ortg * possessions
+      return away_score + home_score
     end
 
     def predict_team_ortg(stats)
@@ -52,7 +50,7 @@ module Algorithm
     end
 
     def predict_player_ortg(stat, predicted_poss_percent)
-      prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05).includes(:model, :game, :season)
+      prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05).includes(:player => :team)
       minutes = prev_stats.map(&:mp)
       games_back = 0
       time_played = 0
@@ -62,7 +60,18 @@ module Algorithm
         break if time_played > 240.0
       end
       prev_stats = prev_stats.limit(games_back)
-      stat = Stats::Stat.new(prev_stats)
+      prev_game_ids = prev_stats.map(&:game_id)
+      prev_team_ids = prev_stats.map(&:team).map(&:id)
+=begin
+  There's two teams per game, we just gotta differentiate between which stat is which
+=end
+      prev_model_stats = Stat.where(model_type: "Team", game_id: prev_game_ids, season_stat: false, games_back: nil).order(game_id: :desc)
+      prev_team_stats = []
+      prev_opp_stats = []
+      prev_model_stats.each_with_index do |stat, index|
+        stat.model_id == prev_team_ids[index/2] ? prev_team_stats << stat : prev_opp_stats << stat
+      end
+      stat = Stats::Stat.new(prev_stats, prev_team_stats, prev_opp_stats)
       ortg = stat.calc_ortg
       return ortg
     end

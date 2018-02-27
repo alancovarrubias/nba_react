@@ -1,14 +1,12 @@
 module Stats
   class Stat
     attr_accessor :stat
-    def initialize(stats)
-      @stat = build_stat(stats)
+    def initialize(stats, team_stats, opp_stats)
+      @stat = build_stat(stats, team_stats, opp_stats)
     end
 
-    def build_stat(stats)
+    def build_stat(stats, team_stats, opp_stats)
       model_type = stats.first.model_type
-      team_stats = stats.map(&:team_stat)
-      opp_stats = stats.map(&:opp_stat)
       stat = ::Stat.build_model(stats)
       team_stat = ::Stat.build_model(team_stats)
       opp_stat = ::Stat.build_model(opp_stats)
