@@ -1,17 +1,18 @@
-module Database
-  class GameBuilder < Builder
+module Builder
+  module Game
+    extend self
+    extend BasketballReference
     ROW_SIZE = 4
-
-    def run
-      games = game_data.each do |data|
-        Game.find_or_create_by(data)
+    def run(season)
+      game_data(season).each do |data|
+        ::Game.find_or_create_by(data)
       end
     end
 
     private
-      def game_data
+      def game_data(season)
         months = [10, 11, 12, 1, 2, 3, 4].map {|num| Date::MONTHNAMES[num].downcase}
-        month_data = months.map { |month| basketball_data("/leagues/NBA_#{year}_games-#{month}.html", ".left") }.compact
+        month_data = months.map { |month| basketball_data("/leagues/NBA_#{season.year}_games-#{month}.html", ".left") }.compact
         rows = month_data.map { |data| data.each_slice(ROW_SIZE).to_a }.flatten(1)
         rows = rows.reject { |row| header_row?(row) }
         rows.map do |row|

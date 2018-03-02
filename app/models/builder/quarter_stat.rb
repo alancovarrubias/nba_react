@@ -1,6 +1,7 @@
-module Database
-  class QuarterStatBuilder < Builder
-    def run
+module Builder
+  module QuarterStat
+    extend self
+    def run(games)
       games.each { |game| build_stats(game) }
     end
 

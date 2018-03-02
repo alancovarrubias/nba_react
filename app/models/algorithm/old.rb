@@ -45,12 +45,14 @@ module Algorithm
 
     def predict_player_poss_percent(stat)
       prev_stats = stat.prev_stats.limit(10)
+      return 0 if prev_stats.size == 0
       poss_percent = prev_stats.map(&:poss_percent).inject(0) { |mem, num| mem + num }
       return poss_percent/prev_stats.size
     end
 
     def predict_player_ortg(stat, predicted_poss_percent)
       prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05).includes(:player => :team)
+      return 90 if prev_stats.size == 0
       minutes = prev_stats.map(&:mp)
       games_back = 0
       time_played = 0

@@ -1,9 +1,10 @@
-module Database
-  class TeamBuilder < Builder
-    def run
+module Builder
+  module Team
+    extend self
+    def run(season)
       names = get_names(year); countries = get_countries(year); abbrs = get_abbrs(year)
       teams = (0...30).map do |index|
-        Team.find_or_create_by(season: season, name: names[index], country: countries[index], abbr: abbrs[index])
+        ::Team.find_or_create_by(season: season, name: names[index], country: countries[index], abbr: abbrs[index])
       end
     end
 

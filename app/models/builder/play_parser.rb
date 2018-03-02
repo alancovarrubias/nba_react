@@ -1,4 +1,4 @@
-module Database
+module Builder
   class PlayParser
     STAT_INDICES = [:sp, :fgm, :fga, :thpa, :thpm, :fta, :ftm, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts, :time]
     def initialize(options)

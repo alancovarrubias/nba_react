@@ -1,6 +1,7 @@
-module Database
-  class PrevStatBuilder < Builder
-    def run(num=nil, period=0)
+module Builder
+  module PrevStat
+    extend self
+    def run(games, num=nil, period=0)
       games.each { |game| build_stats(game, num, period) }
     end
 

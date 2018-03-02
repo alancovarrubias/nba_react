@@ -1,6 +1,7 @@
-module Database
-  class TeamStatBuilder < Builder
-    def run
+module Builder
+  module TeamStat
+    extend self
+    def run(games)
       games.each { |game| build_stats(game) }
     end
 

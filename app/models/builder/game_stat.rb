@@ -1,7 +1,8 @@
-module Database
-  class GameStatBuilder < Builder
+module Builder
+  module GameStat
+    extend self
     ROW_INDICES = { sp: 1, fgm: 2, fga: 3, thpm: 5, thpa: 6, ftm: 8, fta: 9, orb: 11, drb: 12, ast: 14, stl: 15, blk: 16, tov: 17, pf: 18, pts: 19 }
-    def run
+    def run(games)
       games.each do |game|
         build_stats(game)
       end

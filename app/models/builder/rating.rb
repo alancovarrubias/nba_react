@@ -1,6 +1,7 @@
-module Database
-  class RatingBuilder < Builder
-    def run(period=0)
+module Builder
+  module Rating
+    extend self
+    def run(games, period)
       games.each { |game| update_stats(game, period) }
     end
 

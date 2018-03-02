@@ -1,14 +1,15 @@
-module Database
-  class PlayerBuilder < Builder
+module Builder
+  module Player
+    extend self
     ROW_SIZE = 8
-    def run
-      players = team_data.map do |data|
+    def run(teams)
+      players = team_data(teams).map do |data|
         Player.find_or_create_by(data)
       end
     end
 
     private
-      def team_data
+      def team_data(teams)
         teams.map do |team|
           rows = basketball_data("/teams/#{team.abbr}/#{year}.html", "#roster td").each_slice(ROW_SIZE)
           rows.map do |row|

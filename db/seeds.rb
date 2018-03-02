@@ -10,7 +10,5 @@ games.each do |game|
   Algorithm::Old.new(game)
 end
 =end
-
-game = Game.last
-alg = Algorithm::Old.new(game)
-alg.predict_score(10)
+database = Builder::Database.new(2016)
+database.build_bets
