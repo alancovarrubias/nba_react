@@ -27,7 +27,7 @@ const PageBody = ({ seasons }) => {
 const TableHeader = () => {
   return (
         <tr>
-          <th>Year</th>
+          <th>Diff</th>
         </tr>
       );
 }

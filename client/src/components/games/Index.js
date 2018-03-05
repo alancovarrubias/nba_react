@@ -13,7 +13,7 @@ const PageHeader = ({ season }) => {
 const Index = ({ season, games }) => {
   let head = <PageHeader season={season} />;
   let body = <PageBody games={games} />;
-  return <Layout head={head} body={body} />;
+  return <h1>HEY</h1>;
 }
 
 export default Index;

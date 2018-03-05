@@ -62,7 +62,7 @@ const App = () => (
       <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a className="navbar-brand">NBA Database</a>
+            <a className="navbar-brand">Database</a>
           </div>
 
           <div className="collapse navbar-collapse">
