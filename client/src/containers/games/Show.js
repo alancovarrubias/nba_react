@@ -10,9 +10,9 @@ class Show extends Component {
   }
 
   componentDidMount() {
-    let gameId = this.props.match.params.id;
-    let seasonId = this.props.match.params.seasonId;
-    let url = `http://localhost:5000/api/seasons/${seasonId}/games/${gameId}`;
+    let game_id = this.props.match.params.id;
+    let season_id = this.props.match.params.season_id;
+    let url = `http://localhost:3000/api/seasons/${season_id}/games/${game_id}`;
     window.fetch(url)
       .then(response => response.json())
       .then(json => {

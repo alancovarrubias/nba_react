@@ -65,8 +65,8 @@ class Game < ApplicationRecord
   def show_data
     away_team_name = self.away_team.name
     home_team_name = self.home_team.name
-    away_players = self.away_player_game_stats_0.map(&:stat_hash)
-    home_players = self.home_player_game_stats_0.map(&:stat_hash)
+    away_players = self.game_away_player_stats.map(&:stat_hash)
+    home_players = self.game_home_player_stats.map(&:stat_hash)
     return { away_team: { name: away_team_name, players: away_players }, home_team: { name: home_team_name, players: home_players } }
   end
 

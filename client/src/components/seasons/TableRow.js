@@ -10,10 +10,9 @@ class TableRow extends Component {
   handleClick() {
     let seasonId = this.props.season.id;
     let params = {
-      pathname: '/games',
-      search: `?seasonId=${seasonId}`,
-      state: { seasonId: seasonId }
+      pathname: `/seasons/${seasonId}/games`
     };
+    console.log(params);
     this.props.history.push(params);
   }
 

@@ -3,7 +3,7 @@ class GamesController < ApiController
 
   # GET /games
   def index
-    @season = Season.find(params[:seasonId])
+    @season = Season.find(params[:season_id])
     @games = @season.games.includes(:away_team, :home_team).map do |game|
       hash = {}
       hash[:id] = game.id

@@ -1,20 +1,24 @@
 import React from 'react';
-import Layout from '../layouts/Main';
-import GameTable from './index/GameTable';
+import Table from '../common/Table';
+import GameRow from './index/GameRow';
 
-const PageBody = ({ games }) => {
-  return <GameTable games={games} />;
-}
-
-const PageHeader = ({ season }) => {
-  return <h1>{ season.year } Games</h1>;
-}
-
+const Header = () => (
+  <tr>
+    <th>Date</th>
+    <th>Away Team</th>
+    <th>Home Team</th>
+  </tr>
+);
 const Index = ({ season, games }) => {
-  let head = <PageHeader season={season} />;
-  let body = <PageBody games={games} />;
-  return <h1>HEY</h1>;
-}
+  const header = <Header />;
+  const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
+  return (
+    <div>
+      <h1>{ season.year } Games </h1>
+      <Table header={header} rows={rows} /> 
+    </div>
+  );
+};
 
 export default Index;
 

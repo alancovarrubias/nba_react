@@ -18,7 +18,7 @@ const PageHeader = () => {
 const PageBody = ({ seasons }) => {
   let tableHeader = <TableHeader />;
   let tableRows = [];
-  seasons.forEach(function(season) {
+  seasons.forEach((season) => {
     tableRows.push(<TableRow key={season.id} season={season} />);
   });
   return <Table header={tableHeader} rows={tableRows} />;
@@ -27,7 +27,7 @@ const PageBody = ({ seasons }) => {
 const TableHeader = () => {
   return (
         <tr>
-          <th>Diff</th>
+          <th>Year</th>
         </tr>
       );
 }

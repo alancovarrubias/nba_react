@@ -11,8 +11,8 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    let seasonId = this.props.location.state.seasonId;
-    let link = `http://localhost:5000/api/seasons/${seasonId}/games`
+    let season_id = this.props.match.params.season_id;
+    let link = `http://localhost:3000/api/seasons/${season_id}/games`
     window.fetch(link)
       .then(response => response.json())
       .then(json => {

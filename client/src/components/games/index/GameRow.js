@@ -8,12 +8,13 @@ class GameRow extends Component {
   }
 
   handleClick() {
-    let gameId = this.props.game.id;
-    this.props.history.push(`/games/${gameId}`);
+    const season_id = this.props.season.id;
+    const game_id = this.props.game.id;
+    this.props.history.push(`/seasons/${season_id}/games/${game_id}`);
   }
 
   render() {
-    let game = this.props.game;
+    const game = this.props.game;
     return (
       <tr onClick={this.handleClick}>
         <td>{game.date}</td>

@@ -39,7 +39,7 @@ class GameDropdownContainer extends Component {
   }
 
   componentDidMount() {
-    let url = "http://localhost:5000/api/seasons";
+    let url = "http://localhost:3000/api/seasons";
     window.fetch(url)
       .then(response => response.json())
       .then(json => {
@@ -79,9 +79,9 @@ const App = () => (
 
       <Switch>
         <Route exact path="/" component={SeasonIndex}/>
-        <Route path="/seasons" component={SeasonIndex}/>
-        <Route path="/games/:id" component={GameShow}/>
-        <Route path="/games" component={GameIndex}/>
+        <Route exact path="/seasons" component={SeasonIndex}/>
+        <Route exact path="/seasons/:season_id/games" component={GameIndex}/>
+        <Route exact path="/seasons/:season_id/games/:id" component={GameShow}/>
       </Switch>
 
     </div>
