@@ -58,23 +58,27 @@ class GameDropdownContainer extends Component {
 
 const App = () => (
   <BrowserRouter>
-    <div>
+    <div className="container-fluid">
       <nav className="navbar navbar-default">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <a className="navbar-brand">Database</a>
-          </div>
-
-          <div className="collapse navbar-collapse">
-            <ul className="nav navbar-nav">
-              <li><Link to="/seasons">Seasons</Link></li>
-              <li className="dropdown">
-                <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Games <span className="caret"></span></a>
-                <GameDropdownContainer />
-              </li>
-            </ul>
-          </div>
+        <div className="navbar-header">
+          <a className="navbar-brand">NBA Database</a>
         </div>
+        <div className="navbar-header">
+          <a className="navbar-brand">NBA Database</a>
+        </div>
+        /*
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="nav navbar-nav">
+            <li><Link to="/seasons">Seasons</Link></li>
+            <li className="dropdown">
+              <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Games <span className="caret"></span>
+              </a>
+              <GameDropdownContainer />
+            </li>
+          </ul>
+        </div>
+        */
       </nav>
 
       <Switch>
@@ -83,7 +87,6 @@ const App = () => (
         <Route exact path="/seasons/:season_id/games" component={GameIndex}/>
         <Route exact path="/seasons/:season_id/games/:id" component={GameShow}/>
       </Switch>
-
     </div>
   </BrowserRouter> 
 )

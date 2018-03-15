@@ -1,28 +1,28 @@
 import React from 'react';
-import Layout from '../layouts/Main';
+import { Row, Col } from 'react-bootstrap';
 import TeamTable from './show/TeamTable';
+import './Show.css';
 
-const PageBody = ({ game }) => {
-  let teamTables = {};
+const Show = ({ game }) => {
+  const teamTables = {};
   for (let team in game) {
     teamTables[team] = <TeamTable team={game[team]} />;
   }
   return (
-      <div>
-        { teamTables.away_team }
-        { teamTables.home_team }
-      </div>
-    );
-}
-
-const PageHeader = ({ game }) => {
-  return <h1>{game.away_team.name} @ {game.home_team.name}</h1>;
-}
-
-const Show = ({ game }) => {
-  let head = <PageHeader game={game} />;
-  let body = <PageBody game={game} />;
-  return <Layout head={head} body={body} />;
+        <Row>
+          <Col lg={12}>
+            <h1>{game.away_team.name} @ {game.home_team.name}</h1>
+          </Col>
+          <Col lg={12}>
+            <p>{game.away_team.name} Player Stats</p>
+            { teamTables.away_team }
+          </Col>
+          <Col lg={12}>
+            <p>{game.home_team.name} Player Stats</p>
+            { teamTables.home_team }
+          </Col>
+        </Row>
+      );
 };
 
 export default Show;

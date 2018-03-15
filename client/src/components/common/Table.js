@@ -1,18 +1,27 @@
 import React from 'react';
 import './Table.css';
 
-const Table = ({ caption, header, rows }) => {
+const Table = ({ caption, header, body, rows }) => {
   return (
-        <table className="table table-hover table-bordered">
-          <caption>{caption}</caption>
-          <thead>
-            { header }
-          </thead>
-          <tbody>
-            { rows }
-          </tbody>
-        </table>  
-      );
+      <div id="constrainer">
+        <div className="scrolltable">
+          <div className="header">
+            <table className="table table-bordered table-condensed">
+              <thead>
+                  {header}
+              </thead>
+            </table>
+          </div>
+          <div className="body">
+            <table className="table table-bordered table-condensed">
+              <tbody>
+                {rows}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
 }
 
 export default Table;

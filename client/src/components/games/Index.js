@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Table from '../common/Table';
 import GameRow from './index/GameRow';
 
@@ -13,10 +14,14 @@ const Index = ({ season, games }) => {
   const header = <Header />;
   const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
   return (
-    <div>
-      <h1>{ season.year } Games </h1>
-      <Table header={header} rows={rows} /> 
-    </div>
+    <Row>
+      <Col lg={12}>
+        <h1>{ season.year } Games </h1>
+      </Col>
+      <Col lg={12}>
+        <Table header={header} rows={rows} /> 
+      </Col>
+    </Row>
   );
 };
 
