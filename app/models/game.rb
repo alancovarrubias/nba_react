@@ -67,7 +67,11 @@ class Game < ApplicationRecord
     home_team_name = self.home_team.name
     away_players = self.game_away_player_stats.map(&:stat_hash)
     home_players = self.game_home_player_stats.map(&:stat_hash)
-    return { away_team: { name: away_team_name, players: away_players }, home_team: { name: home_team_name, players: home_players } }
+    return {
+      season: { id: season.id, year: season.year },
+      away_team: { name: away_team_name, players: away_players },
+      home_team: { name: home_team_name, players: home_players }
+    }
   end
 
   def url

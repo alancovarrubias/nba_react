@@ -13,7 +13,7 @@ const Table = ({ caption, header, body, rows }) => {
             </table>
           </div>
           <div className="body">
-            <table className="table table-bordered table-condensed">
+            <table className="table table-bordered table-condensed table-hover">
               <tbody>
                 {rows}
               </tbody>

@@ -20,6 +20,10 @@ class GameRow extends Component {
         <td>{game.date}</td>
         <td>{game.away_team}</td>
         <td>{game.home_team}</td>
+        <td>{game.away_bet}</td>
+        <td>{game.home_bet}</td>
+        <td>{game.away_score}</td>
+        <td>{game.home_score}</td>
       </tr>
     );
   }

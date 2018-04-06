@@ -10,6 +10,11 @@ class GamesController < ApiController
       hash[:away_team] = game.away_team.name
       hash[:home_team] = game.home_team.name
       hash[:date] = game.date
+      bet = game.bets.first
+      hash[:away_bet] = bet.away_score ? bet.away_score.round(2) : "N/A"
+      hash[:home_bet] = bet.home_score ? bet.home_score.round(2) : "N/A"
+      hash[:away_score] = game.game_away_team_stat.pts
+      hash[:home_score] = game.game_home_team_stat.pts
       hash
     end
     @season = @season.as_json

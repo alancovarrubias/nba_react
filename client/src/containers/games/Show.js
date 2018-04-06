@@ -5,28 +5,33 @@ class Show extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      game: undefined
+      season: {},
+      home_team: { players: [] },
+      away_team: { players: [] }
     }
   }
 
   componentDidMount() {
-    let game_id = this.props.match.params.id;
-    let season_id = this.props.match.params.season_id;
-    let url = `http://localhost:3000/api/seasons/${season_id}/games/${game_id}`;
+    const game_id = this.props.match.params.id;
+    const season_id = this.props.match.params.season_id;
+    const url = `http://localhost:3000/api/seasons/${season_id}/games/${game_id}`;
     window.fetch(url)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         this.setState({
-          game: json
+          away_team: json.away_team,
+          home_team: json.home_team,
+          season: json.season
         });
       })
       .catch(error => console.log(error))
   }
 
   render() {
-    let game = this.state.game;
-    return game ? <GamesShow game={game} /> : null;
+    const away_team = this.state.away_team;
+    const home_team = this.state.home_team;
+    const season = this.state.season;
+    return <GamesShow season={season} away_team={away_team} home_team={home_team} />;
   }
 }
 

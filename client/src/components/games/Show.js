@@ -3,23 +3,25 @@ import { Row, Col } from 'react-bootstrap';
 import TeamTable from './show/TeamTable';
 import './Show.css';
 
-const Show = ({ game }) => {
-  const teamTables = {};
-  for (let team in game) {
-    teamTables[team] = <TeamTable team={game[team]} />;
-  }
+const Show = ({ season, away_team, home_team }) => {
+  const season_link = `/seasons/${season.id}/games`;
+  const away_table = <TeamTable team={away_team} maxHeight="300px" />;
+  const home_table = <TeamTable team={home_team} maxHeight="300px" />;
   return (
-        <Row>
+        <Row className="game-show">
           <Col lg={12}>
-            <h1>{game.away_team.name} @ {game.home_team.name}</h1>
+            <div>
+              <a href={season_link}>{season.year} Games</a>
+            </div>
+            <h1>{away_team.name} @ {home_team.name}</h1>
           </Col>
-          <Col lg={12}>
-            <p>{game.away_team.name} Player Stats</p>
-            { teamTables.away_team }
+          <Col className="away-table" lg={12}>
+            <p>{away_team.name} Player Stats</p>
+            { away_table }
           </Col>
-          <Col lg={12}>
-            <p>{game.home_team.name} Player Stats</p>
-            { teamTables.home_team }
+          <Col className="home-table" lg={12}>
+            <p>{home_team.name} Player Stats</p>
+            { home_table }
           </Col>
         </Row>
       );

@@ -4,7 +4,8 @@ class CreateBets < ActiveRecord::Migration[5.0]
       t.references :game
       t.string :desc
       t.integer :period
-      t.float :score
+      t.float :away_score
+      t.float :home_score
     end
   end
 end

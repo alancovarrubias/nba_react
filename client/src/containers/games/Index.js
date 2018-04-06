@@ -5,14 +5,15 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      season: undefined,
+      season: {},
       games: []
     }
   }
 
   componentDidMount() {
     let season_id = this.props.match.params.season_id;
-    let link = `http://localhost:3000/api/seasons/${season_id}/games`
+    let link = `http://localhost:3000/api/seasons/${season_id}/games`;
+    console.log(link);
     window.fetch(link)
       .then(response => response.json())
       .then(json => {
@@ -21,13 +22,13 @@ class Index extends Component {
           games: json.games
         });
       })
-      .catch(error => console.log(error))
+      .catch(error => console.log(error));
   }
 
   render() {
     let season = this.state.season;
     let games = this.state.games;
-    return season ? <GamesIndex season={season} games={games} /> : null;
+    return <GamesIndex season={season} games={games} />;
   }
 }
 

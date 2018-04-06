@@ -13,7 +13,7 @@ module Algorithm
       home_team_ortg = predict_team_ortg(home_player_stats)
       away_score = away_team_ortg * possessions
       home_score = home_team_ortg * possessions
-      return away_score + home_score
+      return [away_score, home_score]
     end
 
     def predict_team_ortg(stats)
