@@ -1,30 +1,31 @@
 module Builder
   module GameStat
+    include BasketballReference
     extend self
     ROW_INDICES = { sp: 1, fgm: 2, fga: 3, thpm: 5, thpa: 6, ftm: 8, fta: 9, orb: 11, drb: 12, ast: 14, stl: 15, blk: 16, tov: 17, pf: 18, pts: 19 }
-    def run(games)
+    def run(season, games)
       games.each do |game|
-        build_stats(game)
+        build_stats(season, game)
       end
     end
     private
-      def build_stats(game)
+      def build_stats(season, game)
         puts "#{game.url} #{game.id}"
         doc = basketball_reference("/boxscores/#{game.url}.html")
         game.teams.each do |team|
           abbr = team.abbr.downcase
           data = doc.css("#box_#{abbr}_basic tbody .right , #box_#{abbr}_basic tbody .left").to_a
           rows = create_rows(data)
-          stats = create_stats(team, game, rows)
+          stats = create_stats(season, team, game, rows)
         end
       end
 
-      def create_stats(team, game, rows)
+      def create_stats(season, team, game, rows)
         rows = rows.each_with_index.map do |row, index|
           player_stats = player_attr(row[0]).merge(season: season, team: team)
-          player = Player.find_by(player_stats)
+          player = ::Player.find_by(player_stats)
           starter = index <= 6
-          stat = Stat.find_or_create_by(season: season, game: game, model: player, starter: starter, period: 0)
+          stat = ::Stat.find_or_create_by(season: season, game: game, model: player, starter: starter, period: 0)
           next if row.size == 1
           stat_data = ROW_INDICES.map do |stat, index|
             text = row[index].text

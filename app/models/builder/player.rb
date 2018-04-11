@@ -5,7 +5,7 @@ module Builder
     ROW_SIZE = 8
     def run(season, teams)
       players = team_data(season, teams).map do |data|
-        Player.find_or_create_by(data)
+        ::Player.find_or_create_by(data)
       end
     end
 
