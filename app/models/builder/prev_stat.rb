@@ -16,7 +16,7 @@ module Builder
     end
 
     def build_stat(season, game, stat, num, period)
-      stats = stat.prev_stats
+      stats = stat.prev_stats.limit(10)
       return if not_enough_stats(stats, num)
       stat = ::Stat.find_or_create_by({ season: season, game: game, model: stat.model, period: period,
                                       games_back: stats.size, season_stat: num == nil })
@@ -25,7 +25,7 @@ module Builder
     end
 
     def not_enough_stats(stats, num)
-      return (num != nil && stats.size != num)
+      return (num != nil && stats.size < num)
     end
   end
 end
