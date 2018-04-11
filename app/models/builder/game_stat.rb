@@ -25,7 +25,7 @@ module Builder
           player_stats = player_attr(row[0]).merge(season: season, team: team)
           player = ::Player.find_by(player_stats)
           starter = index <= 6
-          stat = ::Stat.find_or_create_by(season: season, game: game, model: player, starter: starter, period: 0)
+          stat = ::Stat.find_or_create_by(season: season, game: game, model_type: 'Player', model: player, starter: starter, period: 0)
           next if row.size == 1
           stat_data = ROW_INDICES.map do |stat, index|
             text = row[index].text

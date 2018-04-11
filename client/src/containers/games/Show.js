@@ -14,7 +14,7 @@ class Show extends Component {
   componentDidMount() {
     const game_id = this.props.match.params.id;
     const season_id = this.props.match.params.season_id;
-    const url = `http://159.89.138.230/api/seasons/${season_id}/games/${game_id}`;
+    const url = `http://localhost:3001/api/seasons/${season_id}/games/${game_id}`;
     window.fetch(url)
       .then(response => response.json())
       .then(json => {

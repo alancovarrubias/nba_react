@@ -10,7 +10,7 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    let url = 'http://159.89.138.230/api/seasons';
+    const url = '/api/seasons';
     window.fetch(url)
       .then(response => response.json())
       .then(json => {
@@ -22,7 +22,7 @@ class Index extends Component {
   }
 
   render() {
-    let seasons = this.state.seasons;
+    const seasons = this.state.seasons;
     return seasons ? <SeasonIndex seasons={seasons} /> : null;
   }
 }

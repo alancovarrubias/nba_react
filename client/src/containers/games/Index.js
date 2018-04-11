@@ -11,9 +11,8 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    let season_id = this.props.match.params.season_id;
-    let link = `http://159.89.138.230/api/seasons/${season_id}/games`;
-    console.log(link);
+    const season_id = this.props.match.params.season_id;
+    const link = `/api/seasons/${season_id}/games`;
     window.fetch(link)
       .then(response => response.json())
       .then(json => {
@@ -26,8 +25,8 @@ class Index extends Component {
   }
 
   render() {
-    let season = this.state.season;
-    let games = this.state.games;
+    const season = this.state.season;
+    const games = this.state.games;
     return <GamesIndex season={season} games={games} />;
   }
 }

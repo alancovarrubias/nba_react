@@ -10,7 +10,7 @@ class NavbarContainer extends Component {
   }
 
   componentDidMount() {
-    const url = "http://159.89.138.230/api/seasons";
+    const url = '/api/seasons';
     window.fetch(url)
       .then(response => response.json())
       .then(json => {

@@ -14,7 +14,6 @@ module Builder
 
     def build
       build_seasons
-      @season = ::Season.find_by_year(year)
       build_teams
       build_players
       build_games
@@ -24,18 +23,22 @@ module Builder
 
     def build_seasons
       Builder::Season.run(year)
+      @season = ::Season.find_by_year(year)
     end
 
     def build_teams
       Builder::Team.run(season)
+        @teams = @season.teams
     end
 
     def build_players
       Builder::Player.run(season, teams)
+        @players = @season.players
     end
 
     def build_games
       Builder::Game.run(season, teams)
+        @games = @season.games
     end
 
     def build_team_stats
