@@ -9,7 +9,7 @@ class DropdownContainer extends Component {
     }
   }
   componentDidMount() {
-    const url = "http://localhost:3000/api/seasons";
+    const url = "http://159.89.138.230/api/seasons";
     window.fetch(url)
       .then(response => response.json())
       .then(json => {

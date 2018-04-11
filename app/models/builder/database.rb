@@ -12,6 +12,15 @@ module Builder
       end
     end
 
+    def build
+      build_seasons
+      build_teams
+      build_players
+      build_games
+      build_game_stats
+      build_team_stats
+    end
+
     def build_seasons
       Builder::Season.run(year)
     end
@@ -21,7 +30,7 @@ module Builder
     end
 
     def build_players
-      Builder::Player.run(teams)
+      Builder::Player.run(season, teams)
     end
 
     def build_games

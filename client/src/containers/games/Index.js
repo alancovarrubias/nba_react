@@ -12,7 +12,7 @@ class Index extends Component {
 
   componentDidMount() {
     let season_id = this.props.match.params.season_id;
-    let link = `http://localhost:3000/api/seasons/${season_id}/games`;
+    let link = `http://159.89.138.230/api/seasons/${season_id}/games`;
     console.log(link);
     window.fetch(link)
       .then(response => response.json())
