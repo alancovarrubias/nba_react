@@ -7,9 +7,11 @@ class Stat < ApplicationRecord
   belongs_to :team, -> { includes(:stats).where(stats: { model_type: 'Team' }) }, foreign_key: :model_id, optional: true
   belongs_to :player, -> { includes(:stats).where(stats: { model_type: 'Player' }) }, foreign_key: :model_id, optional: true
   def player
+    return if model_type == 'Team'
     super
   end
   def team
+    return player.team if model_type == 'Player'
     super
   end
 
