@@ -2,7 +2,9 @@ module Builder
   module Rating
     extend self
     def run(games, period)
-      games.each { |game| update_stats(game, period) }
+      games.each_slice(5) do |game_slice|
+        game_slice.each { |game| update_stats(game, period) }
+      end
     end
 
     def update_stats(game, period)
