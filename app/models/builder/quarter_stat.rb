@@ -53,8 +53,8 @@ module Builder
     end
 
     def find_player_idstrs(play)
-      player_idstrs = play.children.select { |child| child.class == Nokogiri::XML::Element }.map {|player| player.attributes["href"].value}
-      return player_idstrs.map {|string| string[string.rindex("/")+1...string.index(".")]}
+      player_idstrs = play.children.select { |child| child.class == Nokogiri::XML::Element }.map {|player| player.attributes['href'].value }
+      return player_idstrs.map {|string| string[string.rindex('/')+1...string.index('.')]}
     end
     
     def build_team_stats(game)
@@ -64,7 +64,7 @@ module Builder
     end
 
     def new_team_data(player_stats, team, period)
-      team_data = Stat.new.stat_container
+      team_data = ::Stat.new.stat_container
       player_stats.each do |player_stat|
         player_data = player_stat.stat_container
         player_data.each do |key, value|
@@ -79,11 +79,11 @@ module Builder
     def create_period_stats(game, period)
       away_team = game.away_team
       home_team = game.home_team
-      player_stats = period.stats.where(statable_type: "Player")
+      player_stats = period.stats.where(model_type: 'Player')
       away_team_data = new_team_data(period.away_player_stats, away_team, period)
       home_team_data = new_team_data(period.home_player_stats, home_team, period)
-      Stat.find_or_create_by(away_team_data)
-      Stat.find_or_create_by(home_team_data)
+      ::Stat.find_or_create_by(away_team_data)
+      ::Stat.find_or_create_by(home_team_data)
     end
   end
 end

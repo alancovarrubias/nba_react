@@ -11,5 +11,6 @@ games.each do |game|
 end
 =end
 database = Builder::Database.new(2016)
+database.build_season_stats
 database.build_ratings
 database.build_bets
