@@ -60,8 +60,8 @@ module Builder
       Builder::PrevStat.run(season, games, num, period)
     end
 
-    def build_ratings(period=0)
-      Builder::Rating.run(games, period)
+    def build_ratings
+      Builder::Rating.run(season)
     end
 
     def build_bets

@@ -1,16 +1,9 @@
 module Builder
   module Rating
     extend self
-    def run(games, period)
-      games.each_slice(5) do |game_slice|
-        game_slice.each { |game| update_stats(game, period) }
-      end
-    end
-
-    def update_stats(game, period)
-      puts "Game #{game.id}"
-      game.stats.each do |stat|
-        puts "Stat #{stat.id}"
+    def run(season)
+      Stat.where("season_id = #{season.id} AND (ortg = 0.0 OR drtg = 0.0 OR poss_percent = 0.0)").each do |stat|
+        puts "Rating Stat #{stat.id}"
         ortg = stat.calc_ortg
         drtg = stat.calc_drtg
         poss_percent = stat.calc_poss_percent
