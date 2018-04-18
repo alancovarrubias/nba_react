@@ -17,10 +17,7 @@ module Builder
       build_teams
       build_players
       build_games
-      build_game_stats
-      build_team_stats
-      build_season_stats
-      build_prev_stats(10)
+      build_stats
       build_ratings
       build_bets
     end
@@ -45,16 +42,19 @@ module Builder
       @games = @season.games
     end
 
-    def build_team_stats
-      Builder::TeamStat.run(games)
+    def build_stats
+      build_game_stats
+      build_team_stats
+      build_season_stats
+      build_prev_stats(10)
     end
 
     def build_game_stats
       Builder::GameStat.run(season, games)
     end
 
-    def build_quarter_stats
-      Builder::QuarterStat.run(games)
+    def build_team_stats
+      Builder::TeamStat.run(games)
     end
 
     def build_season_stats(period=0)
@@ -63,6 +63,10 @@ module Builder
 
     def build_prev_stats(num, period=0)
       Builder::PrevStat.run(season, games, num, period)
+    end
+
+    def build_quarter_stats
+      Builder::QuarterStat.run(games)
     end
 
     def build_ratings
