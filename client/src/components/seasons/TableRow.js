@@ -12,7 +12,6 @@ class TableRow extends Component {
     let params = {
       pathname: `/seasons/${seasonId}/games`
     };
-    console.log(params);
     this.props.history.push(params);
   }
 
