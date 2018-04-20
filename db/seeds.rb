@@ -9,6 +9,17 @@ games = Game.all[0..100]
 games.each do |game|
   Algorithm::Old.new(game)
 end
-=end
 database = Builder::Database.new(2016)
 database.build
+=end
+
+
+season = Season.first
+games = season.games
+Builder::PrevStat.run(season, games)
+Builder::Bet.run(games)
+
+
+
+
+
