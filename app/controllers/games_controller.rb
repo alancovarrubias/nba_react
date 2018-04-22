@@ -4,18 +4,18 @@ class GamesController < ApiController
   # GET /games
   def index
     @season = Season.find(params[:season_id])
-    @games = @season.games.includes(:away_team, :home_team).map do |game|
+    @games = @season.games.includes(:away_team, :home_team, :bets).map do |game|
       hash = {}
       hash[:id] = game.id
       hash[:away_team] = game.away_team.name
       hash[:home_team] = game.home_team.name
       hash[:date] = game.date
       bet = game.bets.first
-      hash[:away_score] = game.game_away_team_stat.pts
-      hash[:home_score] = game.game_home_team_stat.pts
       if bet
-        hash[:away_bet] = bet.away_score ? bet.away_score.round(2) : "N/A"
-        hash[:home_bet] = bet.home_score ? bet.home_score.round(2) : "N/A"
+        hash[:away_bet] = bet.away_prediction ? bet.away_score.round(2) : "N/A"
+        hash[:home_bet] = bet.home_prediction ? bet.home_score.round(2) : "N/A"
+        hash[:away_score] = bet.away_score
+        hash[:home_score] = bet.away_score
       end
       hash
     end

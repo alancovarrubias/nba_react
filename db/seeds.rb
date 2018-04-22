@@ -16,7 +16,6 @@ database.build
 
 season = Season.first
 games = season.games
-Builder::PrevStat.run(season, games)
 Builder::Bet.run(games)
 
 

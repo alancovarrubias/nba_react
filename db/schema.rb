@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20171222210549) do
     t.integer "game_id"
     t.string  "desc"
     t.integer "period"
+    t.float   "away_prediction"
+    t.float   "home_prediction"
     t.float   "away_score"
     t.float   "home_score"
     t.index ["game_id"], name: "index_bets_on_game_id", using: :btree

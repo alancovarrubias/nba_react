@@ -5,10 +5,10 @@ module Algorithm
       @game = game
     end
     def predict_score(games_back)
-      return if game.prev_away_games.size < 13 && game.prev_home_games.size < 13
+      return if game.prev_away_games.size < 10 && game.prev_home_games.size < 10
       possessions = predict_possessions(games_back) / 100
       away_player_stats = game.game_away_player_stats
-      home_player_stats = game.game_home_player_stats.includes({ player: :team })
+      home_player_stats = game.game_home_player_stats
       away_team_ortg = predict_team_ortg(away_player_stats)
       home_team_ortg = predict_team_ortg(home_player_stats)
       away_score = away_team_ortg * possessions
