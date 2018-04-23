@@ -13,12 +13,5 @@ database = Builder::Database.new(2016)
 database.build
 =end
 
-
-season = Season.first
-games = season.games
-Builder::Bet.run(games)
-
-
-
-
+Builder::Database.new(2016).build
 
