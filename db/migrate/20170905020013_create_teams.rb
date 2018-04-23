@@ -5,7 +5,7 @@ class CreateTeams < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :abbr
       t.string :abbr2
-      t.string :country
+      t.string :city
     end
   end
 end

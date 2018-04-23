@@ -54,6 +54,9 @@ ActiveRecord::Schema.define(version: 20171222210549) do
     t.float   "home_prediction"
     t.float   "away_score"
     t.float   "home_score"
+    t.float   "away_line"
+    t.float   "spread"
+    t.float   "total"
     t.index ["game_id"], name: "index_bets_on_game_id", using: :btree
   end
 
@@ -141,7 +144,7 @@ ActiveRecord::Schema.define(version: 20171222210549) do
     t.string  "name"
     t.string  "abbr"
     t.string  "abbr2"
-    t.string  "country"
+    t.string  "city"
     t.index ["season_id"], name: "index_teams_on_season_id", using: :btree
   end
 

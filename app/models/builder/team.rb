@@ -3,9 +3,9 @@ module Builder
     extend self
     def run(season)
       year = season.year
-      names = get_names(year); countries = get_countries(year); abbrs = get_abbrs(year)
+      names = get_names(year); cities = get_cities(year); abbrs = get_abbrs(year)
       teams = (0...30).map do |index|
-        ::Team.find_or_create_by(season: season, name: names[index], country: countries[index], abbr: abbrs[index])
+        ::Team.find_or_create_by(season: season, name: names[index], city: cities[index], abbr: abbrs[index])
       end
     end
 
@@ -16,7 +16,7 @@ module Builder
       %W[Hawks Celtics Nets #{ch} Bulls Cavaliers Mavericks Nuggets Pistons Warriors Rockets Pacers Clippers Lakers Grizzlies Heat Bucks Timberwolves #{no} Knicks #{ok} Magic 76ers Suns Trail\ Blazers Kings Spurs Raptors Jazz Wizards]
     end
 
-    def get_countries(year)
+    def get_cities(year)
       br = year <= 2012 ? "New Jersey" : "Brooklyn"
       ok = year <= 2008 ? "Seattle" : "Oklahoma City"
       no = year <= 2007 ? "New Orleans/Oklahoma City" : "New Orleans"

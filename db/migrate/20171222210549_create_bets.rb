@@ -8,6 +8,9 @@ class CreateBets < ActiveRecord::Migration[5.0]
       t.float :home_prediction
       t.float :away_score
       t.float :home_score
+      t.float :away_line
+      t.float :spread
+      t.float :total
     end
   end
 end

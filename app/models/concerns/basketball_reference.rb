@@ -37,8 +37,4 @@ module BasketballReference
     minutes, seconds = text.split(":").map(&:to_i)
     return minutes*60 + seconds
   end
-
-  def stat_hash
-    { sp: 0, fgm: 0, fga: 0 , thpa: 0, thpm: 0, fta: 0, ftm: 0, orb: 0, drb: 0, ast: 0, stl: 0, blk: 0, tov: 0, pf: 0, pts: 0, time: 0 }
-  end
 end
