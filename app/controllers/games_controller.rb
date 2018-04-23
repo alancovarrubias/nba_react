@@ -15,7 +15,7 @@ class GamesController < ApiController
         hash[:away_bet] = bet.away_prediction ? bet.away_score.round(2) : "N/A"
         hash[:home_bet] = bet.home_prediction ? bet.home_score.round(2) : "N/A"
         hash[:away_score] = bet.away_score
-        hash[:home_score] = bet.away_score
+        hash[:home_score] = bet.home_score
       end
       hash
     end
