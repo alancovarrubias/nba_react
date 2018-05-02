@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171222210549) do
+ActiveRecord::Schema.define(version: 20180425033346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,9 +54,6 @@ ActiveRecord::Schema.define(version: 20171222210549) do
     t.float   "home_prediction"
     t.float   "away_score"
     t.float   "home_score"
-    t.float   "away_line"
-    t.float   "spread"
-    t.float   "total"
     t.index ["game_id"], name: "index_bets_on_game_id", using: :btree
   end
 
@@ -74,6 +71,15 @@ ActiveRecord::Schema.define(version: 20171222210549) do
     t.index ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
     t.index ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
     t.index ["season_id"], name: "index_games_on_season_id", using: :btree
+  end
+
+  create_table "lines", force: :cascade do |t|
+    t.integer "game_id"
+    t.string  "desc"
+    t.integer "period"
+    t.float   "spread"
+    t.float   "total"
+    t.index ["game_id"], name: "index_lines_on_game_id", using: :btree
   end
 
   create_table "periods", force: :cascade do |t|

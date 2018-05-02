@@ -24,6 +24,8 @@ class GameRow extends Component {
         <td>{game.home_bet}</td>
         <td>{game.away_score}</td>
         <td>{game.home_score}</td>
+        <td>{game.spread}</td>
+        <td>{game.total}</td>
       </tr>
     );
   }

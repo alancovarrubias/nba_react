@@ -20,6 +20,7 @@ module Builder
       build_stats
       build_ratings
       build_bets
+      build_lines
     end
 
     def build_seasons
@@ -75,6 +76,10 @@ module Builder
 
     def build_bets
       Builder::Bet.run(games)
+    end
+    
+    def build_lines
+      Builder::Line.run(games)
     end
   end
 end

@@ -4,6 +4,7 @@ class Game < ApplicationRecord
   belongs_to :away_team, class_name: "Team"
   has_many :stats, -> { includes(:player, :team).order(sp: :desc) }, dependent: :destroy
   has_many :bets
+  has_many :lines
 
   fields = ["away", "home"]
   models = ["player", "team"]

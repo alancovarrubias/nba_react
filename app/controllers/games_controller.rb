@@ -17,6 +17,11 @@ class GamesController < ApiController
         hash[:away_score] = bet.away_score
         hash[:home_score] = bet.home_score
       end
+      line = game.lines.first
+      if line
+        hash[:spread] = line.spread
+        hash[:total] = line.total
+      end
       hash
     end
     @season = @season.as_json

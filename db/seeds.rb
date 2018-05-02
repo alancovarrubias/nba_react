@@ -13,5 +13,7 @@ database = Builder::Database.new(2016)
 database.build
 =end
 
-Builder::Database.new(2016).build
+builder = Builder::Database.new(2016)
+builder.build_lines
+builder.build_bets
 

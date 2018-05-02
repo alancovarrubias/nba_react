@@ -6,8 +6,14 @@ class Index extends Component {
     super(props);
     this.state = {
       season: {},
-      games: []
-    }
+      games: [],
+      range: 0
+    };
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(event) {
+    this.setState({ range: event.target.value });
   }
 
   componentDidMount() {
@@ -27,7 +33,8 @@ class Index extends Component {
   render() {
     const season = this.state.season;
     const games = this.state.games;
-    return <GamesIndex season={season} games={games} />;
+    const range = this.state.range;
+    return <GamesIndex season={season} games={games} range={range} onChange={this.onChange}/>;
   }
 }
 
