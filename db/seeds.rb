@@ -13,7 +13,8 @@ database = Builder::Database.new(2016)
 database.build
 =end
 
-builder = Builder::Database.new(2016)
-builder.build_lines
-builder.build_bets
+(2017).downto(2001).each do |year|
+  builder = Builder::Database.new(year)
+  builder.build
+end
 
