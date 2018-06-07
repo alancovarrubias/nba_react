@@ -1,51 +1,46 @@
-import React from 'react';
-import { Row, Col } from 'react-bootstrap';
-import Table from '../common/Table';
-import GameRow from './index/GameRow';
-import './Index.css';
+import React from "react";
+import { Row, Col } from "react-bootstrap";
+import Table from "../common/Table";
+import GameRow from "./index/GameRow";
+import BetRows from "./index/BetRows";
+import "./Index.css";
 
-const Header = () => (
-  <tr>
-    <th>Date</th>
-    <th>Away Team</th>
-    <th>Home Team</th>
-    <th>Away Predicted Score</th>
-    <th>Home Predicted Score</th>
-    <th>Away Score</th>
-    <th>Home Score</th>
-    <th>Spread</th>
-    <th>Total</th>
-  </tr>
-);
-const Index = ({ season, games, range, onChange }) => {
-  const header = <Header />;
-  console.log(games);
+const Index = ({ season, games, range, onChange, onClick, bets }) => {
+  const headers = [
+    { text:"Date", width:  "16%" },
+    "Away Team", "Home Team", "Away Predicted Score", "Home Predicted Score", "Away Score", "Home Score", "Spread", "Total"
+  ];
+  const betHeaders = ["", "Wins", "Losses", "Win Percentage", "Loss Percentage"];
+  const betRows = <BetRows bets={bets} />;
   const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
   return (
     <div className="game-index">
       <Row>
         <Col lg={12}>
-          <h1>{ season.year } NBA Games </h1>
+          <h1>{season.year} NBA Games </h1>
         </Col>
       </Row>
       <Row>
-        <Col lg={4}>
-        </Col>
-        <Col lg={4}>
+        <Col lgOffset={4} lg={4} className="mb-3">
           <label>
             Range:
-            <div className="input-group mb-3">
-              <input type="number" className="form-control" value={range} step="0.1" onChange={onChange} />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary" type="button">Calculate</button>
+            <div className="input-group input-group-sm">
+              <input type="number" className="form-control" value={range} onChange={onChange} step="0.1" min="0" />
+              <div className="input-group-btn">
+                <button className="btn btn-outline-secondary" type="button" onClick={onClick}>Calculate</button>
               </div>
             </div>
           </label>
         </Col>
       </Row>
       <Row>
+        <Col lgOffset={4} lg={4} className="mb-3">
+          <Table headers={betHeaders} rows={betRows} />
+        </Col>
+      </Row>
+      <Row>
         <Col lg={12}>
-          <Table header={header} rows={rows} /> 
+          <Table headers={headers} rows={rows} /> 
         </Col>
       </Row>
     </div>

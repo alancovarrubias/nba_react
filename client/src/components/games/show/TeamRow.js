@@ -3,7 +3,7 @@ import React from 'react';
 const TeamRow = ({ player }) => {
   return (
         <tr>
-          <td>{player.name}</td>
+          <td width="16%">{player.name}</td>
           <td>{(player.sp/60.0).toFixed(2)}</td>
           <td>{player.fgm}</td>
           <td>{player.fga}</td>

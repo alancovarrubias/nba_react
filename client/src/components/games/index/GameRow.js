@@ -17,11 +17,11 @@ class GameRow extends Component {
     const game = this.props.game;
     return (
       <tr onClick={this.handleClick}>
-        <td>{game.date}</td>
+        <td width="16%">{game.date}</td>
         <td>{game.away_team}</td>
         <td>{game.home_team}</td>
-        <td>{game.away_bet}</td>
-        <td>{game.home_bet}</td>
+        <td>{game.away_pred}</td>
+        <td>{game.home_pred}</td>
         <td>{game.away_score}</td>
         <td>{game.home_score}</td>
         <td>{game.spread}</td>

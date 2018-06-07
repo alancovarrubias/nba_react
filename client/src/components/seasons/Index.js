@@ -3,14 +3,8 @@ import { Row, Col } from 'react-bootstrap';
 import Table from '../common/Table';
 import TableRow from './TableRow';
 
-const TableHeader = () => (
-        <tr>
-          <th>Year</th>
-        </tr>
-      );
-
 const Index = ({ seasons }) => {
-  const tableHeader = <TableHeader />;
+  const tableHeaders = ["Year"];
   const tableRows = seasons.map(season => <TableRow key={season.id} season={season} />);
   return (
       <Row>
@@ -18,7 +12,7 @@ const Index = ({ seasons }) => {
           <h1>NBA Seasons</h1>
         </Col>
         <Col lg={12}>
-          <Table header={tableHeader} rows={tableRows} />
+          <Table headers={tableHeaders} rows={tableRows} />
         </Col>
       </Row>
     );

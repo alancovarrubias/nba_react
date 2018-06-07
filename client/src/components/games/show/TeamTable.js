@@ -1,14 +1,12 @@
 import React from 'react';
 import Table from '../../common/Table';
 import TeamRow from './TeamRow';
-import TeamHeader from './TeamHeader';
 
-const TeamTable = ({ team }) => {
-  let header = <TeamHeader />;
+const TeamTable = ({ team, headers }) => {
   let rows = team.players.map((player) => {
     return <TeamRow key={player.id} player={player} />;
   });
-  return <Table header={header} rows={rows} />;
+  return <Table headers={headers} rows={rows} />;
 }
 
 export default TeamTable;

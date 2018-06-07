@@ -4,9 +4,6 @@
   font-size: 0.8em;
   background-color: rgba(0, 0, 0, 0.03);
 }
-th:first-child, td:first-child {
-  width: 16%;
-}
 table.table-bordered {
   table-layout: fixed;
   margin: 0;

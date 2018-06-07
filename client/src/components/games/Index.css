@@ -1,3 +1,6 @@
 .game-index .body {
-  max-height: 550px;
+  max-height: 400px;
+}
+.input-group-addon {
+  height: 10px;
 }

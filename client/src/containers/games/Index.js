@@ -1,19 +1,39 @@
-import React, { Component } from 'react';
-import GamesIndex from '../../components/games/Index';
+import React, { Component } from "react";
+import GamesIndex from "../../components/games/Index";
+import calculateBets from "./index/calculateBets";
 
 class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bets: {
+        spread: {
+          wins: 0,
+          losses: 0
+        },
+        total: {
+          wins: 0,
+          losses: 0
+        },
+        total_bets: 0
+      },
       season: {},
       games: [],
       range: 0
     };
     this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onChange(event) {
     this.setState({ range: event.target.value });
+  }
+
+  onClick() {
+    const range = this.state.range;
+    const games = this.state.games;
+    const betStats = calculateBets(games, range);
+    this.setState({ bets: betStats });
   }
 
   componentDidMount() {
@@ -34,7 +54,8 @@ class Index extends Component {
     const season = this.state.season;
     const games = this.state.games;
     const range = this.state.range;
-    return <GamesIndex season={season} games={games} range={range} onChange={this.onChange}/>;
+    const bets = this.state.bets;
+    return <GamesIndex season={season} games={games} range={range} onChange={this.onChange} onClick={this.onClick} bets={bets} />;
   }
 }
 
