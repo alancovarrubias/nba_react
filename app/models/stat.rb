@@ -29,7 +29,7 @@ class Stat < ApplicationRecord
   end
 
   def stats
-    query_hash = { season: season, season_stat: season_stat }
+    query_hash = { season: season, season_stat: season_stat, period: period }
     query_hash.merge!({ games_back: games_back }) unless season_stat
     return Stat.where(query_hash)
   end

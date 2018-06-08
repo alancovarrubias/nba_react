@@ -40,11 +40,11 @@ module Builder
     def get_team(text)
       case text
       when /Clippers/
-        return Team.find_by_name('Clippers')
+        return ::Team.find_by_name('Clippers')
       when /Lakers/
-        return Team.find_by_name('Lakers')
+        return ::Team.find_by_name('Lakers')
       else
-        return Team.find_by_city(text)
+        return ::Team.find_by_city(text)
       end
     end
 

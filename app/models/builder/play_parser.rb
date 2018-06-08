@@ -3,6 +3,7 @@ module Builder
     STAT_INDICES = [:sp, :fgm, :fga, :thpa, :thpm, :fta, :ftm, :orb, :drb, :ast, :stl, :blk, :tov, :pf, :pts, :time]
     def initialize(options)
       @options = options
+      @season = options[:season]
       @game = options[:game]
       @stats = options[:stats]
       @away_lineup = options[:away_lineup]
@@ -117,7 +118,7 @@ module Builder
       lineup1 << @player1
       @stat1[:time] = @time
       if @stat2
-        @stat2[:time] = period_minutes if @stat2[:time] == 0
+        @stat2[:time] = period_seconds if @stat2[:time] == 0
         @stat2[:sp] += @stat2[:time] - @time
         @stat2[:time] = 0
       end
@@ -139,7 +140,7 @@ module Builder
         reset_seconds
       when /End of/
         add_remaining_players_seconds
-        save_stats_to_database
+        save_stats
         reset_stats
         clear_court
       end
@@ -174,13 +175,13 @@ module Builder
       end
     end
 
-    def save_stats_to_database
-      period = Period.find_or_create_by(game: @game, quarter: @quarter)
-      stats = @stats.map do |idstr, stat|
-        player = Player.find(stat[:player_id])
-        stat_hash = stat.reject {|key, value| [:player_id, :time, :team].include?(key)}
-        stat_hash.merge!(intervalable: period, statable: player)
-        Stat.find_or_create_by(stat_hash)
+    def save_stats
+      @stats.map do |idstr, stat_data|
+        player = Player.find(stat_data[:player_id])
+        query_hash = { season: @season, game: @game, model: player, games_back: nil, season_stat: false, period: @quarter }
+        update_hash = stat_data.reject { |key, value| [:player_id, :time, :team].include?(key) }
+        stat = Stat.find_or_create_by(query_hash)
+        stat.update(update_hash)
       end
     end
 

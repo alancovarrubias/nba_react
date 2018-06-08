@@ -10,7 +10,7 @@ const Index = ({ season, games, range, onChange, onClick, bets }) => {
     { text:"Date", width:  "16%" },
     "Away Team", "Home Team", "Away Predicted Score", "Home Predicted Score", "Away Score", "Home Score", "Spread", "Total"
   ];
-  const betHeaders = ["", "Wins", "Losses", "Win Percentage", "Loss Percentage"];
+  const betHeaders = ["", "Wins", "Losses", "Win Percentage",  "Skipped Bets"];
   const betRows = <BetRows bets={bets} />;
   const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
   return (

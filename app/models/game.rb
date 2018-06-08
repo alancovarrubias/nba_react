@@ -15,6 +15,10 @@ class Game < ApplicationRecord
     return [self.away_team, self.home_team]
   end
   
+  def prev_games
+    return Game.where(season: season).where("date < ?", self.date).order(date: :desc)
+  end
+
   fields.each do |field|
     define_method("prev_#{field}_games") do
       team_id = self.send("#{field}_team_id")
@@ -22,35 +26,35 @@ class Game < ApplicationRecord
     end
   end
 
-  def prev_games
-    return Game.where(season: season).where("date < ?", self.date).order(date: :desc)
+  def period_stats(period=0)
+    stats.where(period: period)
   end
 
-  def game_stats
-    stats.where(games_back: nil, season_stat: false)
+  def game_stats(period=0)
+    period_stats(period).where(games_back: nil, season_stat: false)
   end
 
-  def season_stats
-    stats.where(season_stat: true)
+  def season_stats(period=0)
+    period_stats(period).where(season_stat: true)
   end
 
-  def prev_stats(num)
-    stats.where(season_stat: false, games_back: num)
+  def prev_stats(num, period=0)
+    period_stats(period).where(season_stat: false, games_back: num)
   end
 
   models.each do |model|
     query = { model_type: model.capitalize }
     types.each do |type|
       define_method("#{type}_#{model}_stats") do |period=0|
-        return self.send("#{type}_stats").where(query.merge({ period: period }))
+        return self.send("#{type}_stats", period).where(query)
       end
       define_method("prev_#{model}_stats") do |num, period=0|
-        return self.send("prev_stats", num).where(query.merge({ period: period }))
+        return self.send("prev_stats", num, period).where(query)
       end
       fields.each do |field|
         stat = model == "player" ? "stats" : "stat"
         define_method("#{type}_#{field}_#{model}_#{stat}") do |period=0|
-          stats = self.send("#{type}_#{model}_stats")
+          stats = self.send("#{type}_#{model}_stats", period)
           team = self.send("#{field}_team_id")
           return model == "player" ? stats.where(players: { team: team }) : stats.find_by(team: team)
         end

@@ -11,8 +11,8 @@ const BetRows = ({ bets }) => {
         <td>{data.text}</td>
         <td>{wins}</td>
         <td>{losses}</td>
-        <td>{total === 0 ? 0.0 : (wins/total).toFixed(3)}</td>
-        <td>{total === 0 ? 0.0 : (losses/total).toFixed(3)}</td>
+        <td>{total === 0 ? 0.0 : ((wins/total).toFixed(4) * 100).toFixed(2)}</td>
+        <td>{bets.total_bets - wins - losses}</td>
       </tr>
     );
   });

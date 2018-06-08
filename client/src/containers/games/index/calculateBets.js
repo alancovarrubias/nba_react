@@ -10,6 +10,7 @@ const calculateBets = (games, range) => {
       const game_total = game.total;
       const pred_total = game.home_pred + game.away_pred;
       const total_diff = game_total - pred_total;
+      console.log(total_diff);
       if (Math.abs(total_diff) > range) {
         const score_total = game.home_score + game.away_score;
         const win_bet = total_diff > 0 ? score_total > game_total : score_total < game_total;
