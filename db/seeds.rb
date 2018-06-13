@@ -13,9 +13,8 @@ database = Builder::Database.new(2016)
 database.build
 =end
 
-(2017).downto(2001).each do |year|
-  year = 2017
+(2017).downto(2006) do |year|
   builder = Builder::Database.new(year)
-  builder.build_quarter_stats
+  builder.build_lines
 end
 

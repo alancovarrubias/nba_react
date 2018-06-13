@@ -61,7 +61,7 @@ module Builder
     end
     
     def build_lines
-      Builder::Line.run(games)
+      Builder::Line.run(season, games)
     end
   end
 end
