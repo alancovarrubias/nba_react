@@ -16,6 +16,6 @@ database.build
 # (2017).downto(2006) do |year|
   year = 2010
   builder = Builder::Database.new(year)
-  builder.build_lines([Date.new(2013, 12, 22)])
+  builder.build_lines([Date.new(2009, 10, 27)])
 # end
 

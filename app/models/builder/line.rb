@@ -25,7 +25,7 @@ module Builder
       puts type
       doc = sports_book_review(path)
       team_data = doc.css(".team-name a").map do |element|
-        id = element["href"].match(/\d{5}\/$/)[0].chomp("/")
+        id = element["href"].match(/\d{4,5}\/$/)[0].chomp("/")
         team = get_team(element.text)
         { id: id, team: team }
       end
