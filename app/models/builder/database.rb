@@ -17,10 +17,12 @@ module Builder
       build_teams
       build_players
       build_games
+=begin
       build_game_stats
       build_quarter_stats
       build_ratings
       build_bets
+=end
       build_lines
     end
 
@@ -60,8 +62,9 @@ module Builder
       Builder::Bet.run(games)
     end
     
-    def build_lines
-      Builder::Line.run(season, games)
+    def build_lines(dates=nil)
+      dates = dates ? dates : games.map(&:date).uniq
+      Builder::Line.run(season, games, dates)
     end
   end
 end

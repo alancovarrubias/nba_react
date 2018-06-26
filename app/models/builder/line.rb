@@ -2,12 +2,8 @@ module Builder
   module Line
     extend self
     extend SportsBookReview
-    def run(season, games)
+    def run(season, games, dates)
       @season = season
-      dates = games.map(&:date).uniq
-      build_lines(games, dates)
-    end
-    def build_lines(games, dates)
       dates.each do |date|
         date_str = date.to_s.tr("-", "")
         spread_path = "/betting-odds/nba-basketball/?date=#{date_str}"; spread_css = ".eventLine-opener .eventLine-book-value"
@@ -26,14 +22,29 @@ module Builder
     end
 
     def get_line_data(type, path, css)
+      puts type
       doc = sports_book_review(path)
-      teams = doc.css(".team-name a").each_slice(2).map do |slice|
-        text = slice[1].text
-        get_team(text)
+      team_data = doc.css(".team-name a").map do |element|
+        id = element["href"].match(/\d{5}\/$/)[0].chomp("/")
+        team = get_team(element.text)
+        { id: id, team: team }
       end
-      lines = doc.css(css).each_slice(2).map do |slice|
-        text = slice[1].text
+      line_data = doc.css(css).map do |element|
+        text = element.text
         get_line_number(type, text) unless text.length == 0
+      end
+      teams = []
+      lines = []
+      until team_data.empty?
+        if team_data[0][:id] == team_data[1][:id]
+          team_slice = team_data.shift(2)
+          line_slice = line_data.shift(2)
+          teams << team_slice[1][:team]
+          lines << line_slice[1]
+        else
+          team_data.shift(1)
+          line_data.shift(1)
+        end
       end
       return teams, lines
     end
