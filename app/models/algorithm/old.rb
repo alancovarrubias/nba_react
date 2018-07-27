@@ -1,14 +1,14 @@
 module Algorithm
   class Old
-    attr_reader :game
-    def initialize(game)
+    def initialize(game, period)
       @game = game
+      @period = period
     end
-    def predict_score(games_back)
-      return if game.prev_away_games.size < 10 || game.prev_home_games.size < 10
+    def predict_score(games_back, period=0)
+      return if @game.prev_away_games.size < 10 || @game.prev_home_games.size < 10
       possessions = predict_possessions(games_back) / 100
-      away_player_stats = game.game_away_player_stats
-      home_player_stats = game.game_home_player_stats
+      away_player_stats = @game.game_away_player_stats(@period)
+      home_player_stats = @game.game_home_player_stats(@period)
       away_team_ortg = predict_team_ortg(away_player_stats)
       home_team_ortg = predict_team_ortg(home_player_stats)
       away_score = away_team_ortg * possessions
@@ -29,12 +29,12 @@ module Algorithm
     end
 
     def predict_possessions(games_back)
-      away_team_season = game.season_away_team_stat
-      home_team_season = game.season_home_team_stat
+      away_team_season = @game.season_away_team_stat(@period)
+      home_team_season = @game.season_home_team_stat(@period)
       away_team_season_poss = away_team_season.tot_poss/away_team_season.games_back
       home_team_season_poss = home_team_season.tot_poss/home_team_season.games_back
-      away_team_prev = game.prev_away_team_stat(games_back)
-      home_team_prev = game.prev_home_team_stat(games_back)
+      away_team_prev = @game.prev_away_team_stat(games_back)
+      home_team_prev = @game.prev_home_team_stat(games_back)
       away_team_prev_poss = away_team_prev.tot_poss/games_back
       home_team_prev_poss = home_team_prev.tot_poss/games_back
 

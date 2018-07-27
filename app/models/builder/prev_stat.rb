@@ -2,11 +2,10 @@ module Builder
   module PrevStat
     extend self
     def build_season_stats(game, period)
-      build_prev_stats(game, nil, period)
+      build_prev_stats(game, period, nil)
     end
 
-    def build_prev_stats(game, num, period)
-      puts "Game #{game.id} Build Prev Stats"
+    def build_prev_stats(game, period, num)
       return if not_enough(game.prev_away_games, num) || not_enough(game.prev_home_games, num)
       ["player", "team"].each do |model|
         game.send("game_#{model}_stats", period).each do |stat|
@@ -25,7 +24,7 @@ module Builder
     end
 
     def not_enough(stats, num)
-      return (!num && stats.length < 1) || (num && stats.size < num)
+      return (num == nil && stats.length < 1) || (num != nil && stats.size < num)
     end
   end
 end

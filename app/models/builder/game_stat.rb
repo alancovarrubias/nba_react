@@ -4,11 +4,13 @@ module Builder
     extend self
     ROW_INDICES = { sp: 1, fgm: 2, fga: 3, thpm: 5, thpa: 6, ftm: 8, fta: 9, orb: 11, drb: 12, ast: 14, stl: 15, blk: 16, tov: 17, pf: 18, pts: 19 }
     def run(season, games)
+      period = 0
+      games_back = 10
       games.each do |game|
         build_stats(season, game)
-        TeamStat.build_team_stats(game, 0)
-        PrevStat.build_season_stats(game, 0)
-        PrevStat.build_prev_stats(game, 10, 0)
+        TeamStat.build_team_stats(game, period)
+        PrevStat.build_season_stats(game, period)
+        PrevStat.build_prev_stats(game, period, games_back)
       end
     end
     private

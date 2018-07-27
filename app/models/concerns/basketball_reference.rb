@@ -6,6 +6,8 @@ module BasketballReference
   rescue OpenURI::HTTPError => e
     puts "URL #{url} not found"
     return false
+  rescue Net::ReadTimeout => e
+    retry
   rescue Net::OpenTimeout => e
     puts "URL #{url} timeout"
     return false

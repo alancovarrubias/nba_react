@@ -20,10 +20,12 @@ module Builder
     def add_player_to_lineup(player)
       if player
         stat = @stats[player]
-        lineup = stat[:team] == @game.away_team ? @away_lineup : @home_lineup
-        unless lineup.size == 5
-          lineup << @player1
-          stat[:starter] = true
+        if stat
+          lineup = stat[:team] == @game.away_team ? @away_lineup : @home_lineup
+          unless lineup.size == 5
+            lineup << @player1
+            stat[:starter] = true
+          end
         end
       end
     end
@@ -112,11 +114,15 @@ module Builder
     end
 
     def substitution
-      lineup1 = @stat1[:team] == @game.away_team ? @away_lineup : @home_lineup
-      lineup2 = @stat2[:team] == @game.away_team ? @away_lineup : @home_lineup
-      lineup2.delete(@player2)
-      lineup1 << @player1
-      @stat1[:time] = @time
+=begin
+Sometimes a player isn't in the lineup because they come in and don't make any stats. In this case you still need the lineup
+We still need to substitute the player, but we only have the other player's info to determine the 
+=end
+      lineup = @stat1[:team] == @game.away_team ? @away_lineup : @home_lineup if @stat1
+      lineup = @stat2[:team] == @game.away_team ? @away_lineup : @home_lineup if @stat2
+      lineup.delete(@player2)
+      lineup << @player1
+      @stat1[:time] = @time if @stat1
       if @stat2
         @stat2[:time] = period_seconds if @stat2[:time] == 0
         @stat2[:sp] += @stat2[:time] - @time
@@ -177,10 +183,10 @@ module Builder
 
     def save_stats
       @stats.map do |idstr, stat_data|
-        player = Player.find(stat_data[:player_id])
+        player = ::Player.find(stat_data[:player_id])
         query_hash = { season: @season, game: @game, model: player, games_back: nil, season_stat: false, period: @quarter }
         update_hash = stat_data.reject { |key, value| [:player_id, :time, :team].include?(key) }
-        stat = Stat.find_or_create_by(query_hash)
+        stat = ::Stat.find_or_create_by(query_hash)
         stat.update(update_hash)
       end
     end

@@ -3,7 +3,12 @@ module SportsBookReview
   def sports_book_review(path)
     url = File.join('http://www.sportsbookreview.com', path)
     puts url
-    return Nokogiri::HTML(open(url))
+    begin
+      doc = open(url)
+    rescue OpenURI::HTTPError
+      retry
+    end
+    return Nokogiri::HTML(doc)
   end
 
   def sports_book_data(path, css)

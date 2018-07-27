@@ -6,10 +6,10 @@ class Game < ApplicationRecord
   has_many :bets
   has_many :lines
 
-  fields = ["away", "home"]
-  models = ["player", "team"]
-  periods = [0]
-  types = ["game", "season"]
+  FIELDS = ["away", "home"]
+  MODELS = ["player", "team"]
+  PERIODS = [0, 1, 2, 3, 4]
+  TYPES = ["game", "season"]
 
   def teams
     return [self.away_team, self.home_team]
@@ -19,7 +19,7 @@ class Game < ApplicationRecord
     return Game.where(season: season).where("date < ?", self.date).order(date: :desc)
   end
 
-  fields.each do |field|
+  FIELDS.each do |field|
     define_method("prev_#{field}_games") do
       team_id = self.send("#{field}_team_id")
       return self.prev_games.where("away_team_id=#{team_id} OR home_team_id=#{team_id}")
@@ -42,16 +42,16 @@ class Game < ApplicationRecord
     period_stats(period).where(season_stat: false, games_back: num)
   end
 
-  models.each do |model|
+  MODELS.each do |model|
     query = { model_type: model.capitalize }
-    types.each do |type|
+    TYPES.each do |type|
       define_method("#{type}_#{model}_stats") do |period=0|
         return self.send("#{type}_stats", period).where(query)
       end
       define_method("prev_#{model}_stats") do |num, period=0|
         return self.send("prev_stats", num, period).where(query)
       end
-      fields.each do |field|
+      FIELDS.each do |field|
         stat = model == "player" ? "stats" : "stat"
         define_method("#{type}_#{field}_#{model}_#{stat}") do |period=0|
           stats = self.send("#{type}_#{model}_stats", period)
@@ -70,13 +70,44 @@ class Game < ApplicationRecord
   def show_data
     away_team_name = self.away_team.name
     home_team_name = self.home_team.name
-    away_players = self.game_away_player_stats.map(&:stat_hash)
-    home_players = self.game_home_player_stats.map(&:stat_hash)
+    away_players = {}
+    home_players = {}
+    PERIODS.each do |period|
+      away_players[period] = self.game_away_player_stats(period).map(&:stat_hash)
+      home_players[period] = self.game_home_player_stats(period).map(&:stat_hash)
+    end
     return {
       season: { id: season.id, year: season.year },
-      away_team: { name: away_team_name, players: away_players },
-      home_team: { name: home_team_name, players: home_players }
+      away_team: {
+        name: away_team_name,
+        players: away_players
+      },
+      home_team: {
+        name: home_team_name,
+        players: home_players
+      }
     }
+  end
+
+  def index_data(period)
+    hash = {}
+    hash[:id] = game.id
+    hash[:away_team] = game.away_team.name
+    hash[:home_team] = game.home_team.name
+    hash[:date] = game.date
+    bet = game.bets.find_by(period: period, desc: "old")
+    if bet
+      hash[:away_pred] = bet.away_prediction ? bet.away_prediction.round(2) : "N/A"
+      hash[:home_pred] = bet.home_prediction ? bet.home_prediction.round(2) : "N/A"
+      hash[:away_score] = bet.away_score
+      hash[:home_score] = bet.home_score
+    end
+    line = game.lines.find_by(period: period)
+    if line
+      hash[:spread] = line.spread
+      hash[:total] = line.total
+    end
+    return hash
   end
 
   def url

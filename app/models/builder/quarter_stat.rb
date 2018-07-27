@@ -8,7 +8,7 @@ module Builder
         (1..quarter).each do |period|
           TeamStat.build_team_stats(game, period)
           PrevStat.build_season_stats(game, period)
-          PrevStat.build_prev_stats(game, 10, period)
+          PrevStat.build_prev_stats(game, period, 10)
         end
       end
     end

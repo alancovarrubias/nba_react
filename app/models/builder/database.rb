@@ -17,13 +17,13 @@ module Builder
       build_teams
       build_players
       build_games
-=begin
       build_game_stats
       build_quarter_stats
+=begin
       build_ratings
       build_bets
-=end
       build_lines
+=end
     end
 
     def build_seasons
@@ -47,7 +47,7 @@ module Builder
     end
 
     def build_game_stats
-      Builder::GameStat.run(season, games)
+      Builder::GameStat.run(season, games.where("id >= 732"))
     end
 
     def build_quarter_stats
