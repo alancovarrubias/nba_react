@@ -4,3 +4,6 @@
 .input-group-addon {
   height: 10px;
 }
+label {
+  width: 100%;
+}

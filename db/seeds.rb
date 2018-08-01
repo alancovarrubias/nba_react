@@ -13,12 +13,10 @@ database = Builder::Database.new(2016)
 database.build
 =end
 
-# (2017).downto(2006) do |year|
-  year = 2017
+(2017).downto(2006) do |year|
   builder = Builder::Database.new(year)
-  date = Date.new(2017, 1, 19)
-  dates = Season.find_by_year(year).games.where("date >= ?", date).map(&:date).uniq
-  builder.build_lines(dates)
+  builder.build_quarter_stats
+end
 =begin
 =end
 # end

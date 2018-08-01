@@ -59,7 +59,7 @@ module Builder
     end
 
     def build_bets
-      Builder::Bet.run(games)
+      Builder::Bet.run(games.where("id > ?", 160))
     end
     
     def build_lines(dates=nil)

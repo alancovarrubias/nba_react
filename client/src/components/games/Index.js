@@ -1,11 +1,17 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
+import "./Index.css";
+
+// Components
 import Table from "../common/Table";
 import GameRow from "./index/GameRow";
 import BetRows from "./index/BetRows";
-import "./Index.css";
 
-const Index = ({ season, games, range, onChange, onClick, bets }) => {
+// Constants
+import { PERIODS } from "../../const/periods";
+
+
+const Index = ({ season, games, range, bets, onChange, onClick, onPeriodChange }) => {
   const headers = [
     { text:"Date", width:  "16%" },
     "Away Team", "Home Team", "Away Predicted Score", "Home Predicted Score", "Away Score", "Home Score", "Spread", "Total"
@@ -13,6 +19,7 @@ const Index = ({ season, games, range, onChange, onClick, bets }) => {
   const betHeaders = ["", "Wins", "Losses", "Win Percentage",  "Skipped Bets"];
   const betRows = <BetRows bets={bets} />;
   const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
+  const options = Object.keys(PERIODS).map(period => <option key={period} value={period}>{PERIODS[period]}</option>);
   return (
     <div className="game-index">
       <Row>
@@ -21,7 +28,15 @@ const Index = ({ season, games, range, onChange, onClick, bets }) => {
         </Col>
       </Row>
       <Row>
-        <Col lgOffset={4} lg={4} className="mb-3">
+        <Col lgOffset={4} lg={2} className="mb-3">
+          <label>
+            Period:
+            <select className="form-control" onChange={onPeriodChange}>
+              {options}
+            </select>
+          </label>
+        </Col>
+        <Col lg={2} className="mb-3">
           <label>
             Range:
             <div className="input-group input-group-sm">

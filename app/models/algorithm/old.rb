@@ -4,7 +4,7 @@ module Algorithm
       @game = game
       @period = period
     end
-    def predict_score(games_back, period=0)
+    def predict_score(games_back)
       return if @game.prev_away_games.size < 10 || @game.prev_home_games.size < 10
       possessions = predict_possessions(games_back) / 100
       away_player_stats = @game.game_away_player_stats(@period)

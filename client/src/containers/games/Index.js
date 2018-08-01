@@ -19,10 +19,12 @@ class Index extends Component {
       },
       season: {},
       games: [],
-      range: 0
+      range: 0,
+      period: 0
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onPeriodChange = this.onPeriodChange.bind(this);
   }
 
   onChange(event) {
@@ -34,6 +36,10 @@ class Index extends Component {
     const games = this.state.games;
     const betStats = calculateBets(games, range);
     this.setState({ bets: betStats });
+  }
+
+  onPeriodChange(event) {
+    this.setState({ period: event.target.value });
   }
 
   componentDidMount() {
@@ -52,10 +58,12 @@ class Index extends Component {
 
   render() {
     const season = this.state.season;
-    const games = this.state.games;
+    const period = this.state.period;
+    const games = this.state.games.map(game => game[period]);
     const range = this.state.range;
     const bets = this.state.bets;
-    return <GamesIndex season={season} games={games} range={range} onChange={this.onChange} onClick={this.onClick} bets={bets} />;
+    return <GamesIndex season={season} games={games} range={range} bets={bets}
+    onChange={this.onChange} onClick={this.onClick} onPeriodChange={this.onPeriodChange} />;
   }
 }
 
