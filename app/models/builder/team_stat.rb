@@ -2,7 +2,6 @@ module Builder
   module TeamStat
     extend self
     def build_team_stats(game, period)
-      puts "Game ID: #{game.id} Period: #{period} Team Stats"
       fields = ["away", "home"]
       fields.each do |field|
         team = game.send("#{field}_team")

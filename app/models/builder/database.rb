@@ -47,7 +47,7 @@ module Builder
     end
 
     def build_game_stats
-      Builder::GameStat.run(season, games.where("id >= 732"))
+      Builder::GameStat.run(season, games)
     end
 
     def build_quarter_stats
@@ -59,7 +59,7 @@ module Builder
     end
 
     def build_bets
-      Builder::Bet.run(games.where("id > ?", 160))
+      Builder::Bet.run(games)
     end
     
     def build_lines(dates=nil)
