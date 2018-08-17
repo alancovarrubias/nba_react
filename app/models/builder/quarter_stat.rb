@@ -2,7 +2,7 @@ module Builder
   module QuarterStat
     include BasketballReference
     extend self
-    def run(season, games)
+    def build(season, games)
       games.each do |game|
         quarter = build_stats(season, game)
         (1..quarter).each do |period|

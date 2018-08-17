@@ -1,6 +1,6 @@
 module Builder
   class Database
-    attr_reader :year, :season, :teams, :players, :games
+    attr_reader :year, :season, :teams, :players
     include BasketballReference
     def initialize(year)
       @year = year
@@ -19,8 +19,8 @@ module Builder
       build_games
       build_game_stats
       build_quarter_stats
-=begin
       build_ratings
+=begin
       build_bets
       build_lines
 =end
@@ -46,25 +46,28 @@ module Builder
       @games = @season.games
     end
 
-    def build_game_stats
-      Builder::GameStat.run(season, games)
+    def build_game_stats(games=nil)
+      games = games ? games : @games
+      Builder::GameStat.run(@season, games)
     end
 
-    def build_quarter_stats
-      Builder::QuarterStat.run(season, games)
+    def build_quarter_stats(games=nil)
+      games = games ? games : @games
+      Builder::QuarterStat.build(@season, games)
     end
 
     def build_ratings
-      Builder::Rating.run(season)
+      stats = ::Stat.where("season_id = #{@season.id} AND ortg = 0.0 AND drtg = 0.0 AND poss_percent = 0.0").limit(100)
+      Builder::Rating.build(stats)
     end
 
     def build_bets
-      Builder::Bet.run(games)
+      Builder::Bet.run(@games)
     end
     
     def build_lines(dates=nil)
-      dates = dates ? dates : games.map(&:date).uniq
-      Builder::Line.run(season, games, dates)
+      dates = dates ? dates : @games.map(&:date).uniq
+      Builder::Line.run(season, @games, dates)
     end
   end
 end

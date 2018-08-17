@@ -29,6 +29,10 @@ module Builder
         rows = rows.each_with_index.map do |row, index|
           player_stats = player_attr(row[0]).merge(season: season, team: team)
           player = ::Player.find_by(player_stats)
+          if !player
+            player = ::Player.create(player_stats)
+            puts "#{player.id} #{player.name} Created"
+          end
           starter = index <= 6
           stat = ::Stat.find_or_create_by(season: season, game: game, model: player, starter: starter, period: 0)
           next if row.size == 1
