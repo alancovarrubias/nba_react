@@ -15,7 +15,7 @@ module Builder
     end
     private
       def build_stats(season, game)
-        puts "#{game.url} #{game.id}"
+        puts "Game Stat #{game.url} #{game.id}"
         doc = basketball_reference("/boxscores/#{game.url}.html")
         game.teams.each do |team|
           abbr = team.abbr.downcase

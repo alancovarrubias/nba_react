@@ -6,6 +6,7 @@ module Builder
       games.each do |game|
         quarter = build_stats(season, game)
         (1..quarter).each do |period|
+          puts "Period #{period}"
           TeamStat.build_team_stats(game, period)
           PrevStat.build_season_stats(game, period)
           PrevStat.build_prev_stats(game, period, 10)
@@ -14,7 +15,7 @@ module Builder
     end
 
     def build_stats(season, game)
-      puts "#{game.url} #{game.id}"
+      puts "Quarter Stat #{game.url} #{game.id}"
       stats = initialize_stats(game)
       away_lineup = Set.new
       home_lineup = Set.new
