@@ -12,13 +12,13 @@ import { PERIODS } from "../../const/periods";
 
 
 const Index = ({ season, games, range, bets, onChange, onClick, onPeriodChange }) => {
-  const headers = [
+  const gameHeaders = [
     { text:"Date", width:  "16%" },
     "Away Team", "Home Team", "Away Predicted Score", "Home Predicted Score", "Away Score", "Home Score", "Spread", "Total"
   ];
+  const gameKeys = ["date", "away_team", "home_team", "away_pred", "home_pred", "away_score", "home_score", "spread", "total"];
   const betHeaders = ["", "Wins", "Losses", "Win Percentage",  "Skipped Bets"];
   const betRows = <BetRows bets={bets} />;
-  const rows = games.map(game => <GameRow key={game.id} season={season} game={game} />);
   const options = Object.keys(PERIODS).map(period => <option key={period} value={period}>{PERIODS[period]}</option>);
   return (
     <div className="game-index">
@@ -50,12 +50,12 @@ const Index = ({ season, games, range, bets, onChange, onClick, onPeriodChange }
       </Row>
       <Row>
         <Col lgOffset={4} lg={4} className="mb-3">
-          <Table headers={betHeaders} rows={betRows} />
+          <Table headers={betHeaders} rows={bettows} />
         </Col>
       </Row>
       <Row>
         <Col lg={12}>
-          <Table headers={headers} rows={rows} /> 
+          <Table headers={gameHeaders} rows={games} keys={gameKeys} /> 
         </Col>
       </Row>
     </div>

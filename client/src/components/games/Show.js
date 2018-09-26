@@ -1,16 +1,16 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import TeamTable from './show/TeamTable';
+import Table from '../show/Table';
 import './Show.css';
 
-const Show = ({ season, away_team, home_team }) => {
-  const season_link = `/seasons/${season.id}/games`;
+const Show = ({ season, away_team, home_team, away_players, home_players }) => {
   const headers = [
     { width: "16%", text: "Name" },
     "MP", "FGM", "FGA", "THPM", "THPA", "FTM", "FTA", "ORB", "DRB", "AST", "STL", "BLK", "TOV", "PF", "PTS", "ORTG", "DRTG"
-  ];
-  const away_table = <TeamTable headers={headers} team={away_team} maxHeight="300px" />;
-  const home_table = <TeamTable headers={headers} team={home_team} maxHeight="300px" />;
+  ]
+  const keys= = ["name", "mp", "fgm", "fga", "thpm", "thpa", "ftm", "fta", "orb", "drb", "ast", "stl", "blk", "tov", "pf", "pts", "ortg", "drtg"]
+  const away_table = <Table headers={headers} keys={keys} rows={away_players} maxHeight="300px"/>
+  const home_table = <Table headers={headers} keys={keys} rows={home_players} maxHeight="300px"/>
   return (
         <Row className="game-show">
           <Col lg={12}>

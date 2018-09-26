@@ -1,9 +1,16 @@
 import React from 'react';
 import './Table.css';
 
-const Table = ({ caption, headers, body, rows }) => {
-  const headerCols = headers.map((data, index) => {
+const Table = ({ headers, keys, rows }) => {
+  const headerCells = headers.map((data, index) => {
     return data.text ? <th key={index} width={data.width}>{data.text}</th> : <th key={index}>{data}</th>;
+  });
+  const rowCells = rows.map((row, index) => {
+    return (
+      <tr key={index}>
+        {keys.map((key, index) => <td key={index}>{row[key]}</td>)}
+      </tr>
+    );
   });
   return (
       <div id="constrainer">
@@ -11,14 +18,14 @@ const Table = ({ caption, headers, body, rows }) => {
           <div className="header">
             <table className="table table-bordered table-condensed">
               <thead>
-                <tr>{headerCols}</tr>
+                <tr>{headerCells}</tr>
               </thead>
             </table>
           </div>
           <div className="body">
             <table className="table table-bordered table-condensed table-hover">
               <tbody>
-                {rows}
+                {rowCells}
               </tbody>
             </table>
           </div>
