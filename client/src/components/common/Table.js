@@ -1,14 +1,14 @@
 import React from 'react';
 import './Table.css';
 
-const Table = ({ headers, keys, rows }) => {
+const Table = ({ headers, keys, rows, rowClick }) => {
   const headerCells = headers.map((data, index) => {
     return data.text ? <th key={index} width={data.width}>{data.text}</th> : <th key={index}>{data}</th>;
   });
   const rowCells = rows.map((row, index) => {
     return (
-      <tr key={index}>
-        {keys.map((key, index) => <td key={index}>{row[key]}</td>)}
+      <tr key={index} onClick={() => rowClick(row)}>
+        {keys.map((key, index) => <td width={headers[index].width} key={index}>{row[key]}</td>)}
       </tr>
     );
   });

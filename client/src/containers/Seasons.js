@@ -5,17 +5,17 @@ import SeasonIndex from '../components/seasons/Index'
 
 class Seasons extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.rowClick = this.rowClick.bind(this);
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchSeasons());
+  rowClick(season) {
+    const { router } = this.props;
+    router.navigate({ name: "Games", params: { seasonId: season.id } });
   }
 
   render() {
-    const { seasons } = this.props;
-    return (<SeasonIndex seasons={seasons} />)
+    return (<SeasonIndex {...this.props} rowClick={this.rowClick} />);
   }
 }
 
@@ -23,6 +23,7 @@ function mapStateToProps(state) {
   const { seasons } = state;
   return {
     seasons
-  }
+  };
 }
-export default connect(mapStateToProps)(Seasons)
+
+export default connect(mapStateToProps)(Seasons);

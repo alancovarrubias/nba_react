@@ -78,13 +78,15 @@ class Game < ApplicationRecord
     end
     return {
       season: { id: season.id, year: season.year },
-      away_team: {
-        name: away_team_name,
-        players: away_players
-      },
-      home_team: {
-        name: home_team_name,
-        players: home_players
+      game: {
+          away_team: {
+          name: away_team_name,
+          players: away_players
+        },
+        home_team: {
+          name: home_team_name,
+          players: home_players
+        }
       }
     }
   end
@@ -95,6 +97,7 @@ class Game < ApplicationRecord
     hash[:away_team] = game.away_team.name
     hash[:home_team] = game.home_team.name
     hash[:date] = game.date
+=begin
     bet = game.bets.find_by(period: period, desc: "old")
     if bet
       hash[:away_pred] = bet.away_prediction ? bet.away_prediction.round(2) : "N/A"
@@ -107,6 +110,7 @@ class Game < ApplicationRecord
       hash[:spread] = line.spread
       hash[:total] = line.total
     end
+=end
     return hash
   end
 

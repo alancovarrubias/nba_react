@@ -1,17 +1,13 @@
 class GamesController < ApiController
+  PERIODS = [0, 1, 2, 3, 4]
   before_action :set_game, only: [:show, :update, :destroy]
 
   # GET /games
   def index
     @season = Season.find(params[:season_id])
-    @games = @season.games.includes(:away_team, :home_team, :bets).map do |game|
-      {
-        0 => game.index_data(0),
-        1 => game.index_data(1),
-        2 => game.index_data(2),
-        3 => game.index_data(3),
-        4 => game.index_data(4)
-      }
+    @games = {}
+    PERIODS.each do |period|
+      @games[period] = @season.games.map { |game| game.index_data(period) }
     end
     @season = @season.as_json
 

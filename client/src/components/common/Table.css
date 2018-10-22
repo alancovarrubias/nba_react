@@ -33,3 +33,6 @@ table.table-bordered {
 .scrolltable > .header {
   display: flex;
 }
+td {
+  cursor: pointer;
+}
