@@ -201,6 +201,9 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
+    seed_dump (3.3.1)
+      activerecord (>= 4)
+      activesupport (>= 4)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -245,6 +248,7 @@ DEPENDENCIES
   rails (~> 5.0.5)
   rails-controller-testing
   rspec-rails (~> 3.5.0)
+  seed_dump
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
