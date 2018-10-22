@@ -40,6 +40,8 @@ module Builder
           tech_foul
         when /violation/i
           violation
+        when /ejected/i
+          ejected
         end
       end
 
@@ -116,6 +118,10 @@ module Builder
 
       def violation
         @type = "viol"
+      end
+
+      def ejected
+        @type = "ejected"
       end
     end
   end
