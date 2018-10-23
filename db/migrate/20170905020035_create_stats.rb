@@ -27,6 +27,7 @@ class CreateStats < ActiveRecord::Migration[5.0]
       t.float :pace, default: 0
       t.float :ortg, default: 0
       t.float :drtg, default: 0
+      t.float :drtg_diff, default: 0
     end
   end
 end

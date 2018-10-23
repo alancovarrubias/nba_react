@@ -52,12 +52,15 @@ module Stats
       team.tot_poss / (team.tot_poss + opp.tot_poss)
     end
 
+    def calc_ortg
+      100 * team.pts / team.tot_poss
+    end
+
     def calc_drtg
       100 * (opp.pts / team.tot_poss)
     end
 
-    def calc_ortg
-      100 * team.pts / team.tot_poss
+    def calc_drtg_diff
     end
   end
 end

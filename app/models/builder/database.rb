@@ -55,8 +55,17 @@ module Builder
     end
 
     def build_ratings
-      stats = ::Stat.where("season_id = #{@season.id} AND ortg = 0.0 AND drtg = 0.0 AND poss_percent = 0.0")
-      Builder::Stats::Ratings.run(stats)
+      loop do
+        stats = ::Stat.where("season_id = #{@season.id} AND ortg = 0.0 AND drtg = 0.0 AND poss_percent = 0.0").limit(100)
+        break if stats.empty?
+        Builder::Stats::Ratings.run(stats)
+      end
+=begin
+      loop do
+        team_stats = ::Stat.where("season_id = #{@season.id} AND model_type = 'Team' AND drtg_diff = 0.0").limit(100)
+        Builder::Stats::DrtgDiff.run(team_stats, 0)
+      end
+=end
     end
 
     def build_bets
