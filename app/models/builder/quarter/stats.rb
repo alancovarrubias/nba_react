@@ -9,9 +9,11 @@ module Builder
         games.each do |game|
           @game = game
           quarter = build_stats
-          (1..4).each do |period|
+          (1..quarter).each do |period|
             puts "Period #{period}"
             ::Builder::Team::Stats.build(game, period)
+          end
+          (1..4).each do |period|
             ::Builder::Stats::Previous.build_season(game, period)
             ::Builder::Stats::Previous.build_previous(game, period, 10)
           end
