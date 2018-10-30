@@ -11,9 +11,9 @@ module Builder
           quarter = build_stats
           (1..quarter).each do |period|
             puts "Period #{period}"
+            ::Builder::Team::Stats.build(game, period)
             ::Builder::Stats::Previous.build_season(game, period)
             ::Builder::Stats::Previous.build_previous(game, period, 10)
-            ::Builder::Team::Stats.build(game, period, [10])
           end
         end
       end
