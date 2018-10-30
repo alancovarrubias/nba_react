@@ -6,7 +6,7 @@ module Builder
         ["away", "home"].each do |field|
           game_stat = game.send("game_#{field}_team_stat", period)
           if games_back
-            prev_stat = game.send("prev_#{field}_team_stat", (games_back, period)
+            prev_stat = game.send("prev_#{field}_team_stat", games_back, period)
             team_stats = game.latest_team_prev_stats(games_back)
           elsif games_back == nil
             prev_stat = game.send("season_#{field}_team_stat", period)
