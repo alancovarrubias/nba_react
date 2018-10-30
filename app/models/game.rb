@@ -26,6 +26,32 @@ class Game < ApplicationRecord
     end
   end
 
+  def opp_team_stat(team, period)
+    if self.away_team == team
+      return self.game_away_team_stat(period)
+    elsif self.home_team == team
+      return self.game_home_team_stat(period)
+    else
+      return nil
+    end
+  end
+
+  def latest_team_season_stats
+    teams = season.teams
+    return Hash[teams.map do |team|
+      stat = Stat.where(season_stat: true).where("game_id < ?", game.id).order("game_id DESC").first
+      [team, stat]
+    end]
+  end
+
+  def latest_team_prev_stats(games_back)
+    teams = season.teams
+    return Hash[teams.map do |team|
+      stat = Stat.where(games_back: games_back, season_stat: false).where("game_id < ?", game.id).order("game_id DESC").first
+      [team, stat]
+    end]
+  end
+
   def period_stats(period=0)
     stats.where(period: period)
   end

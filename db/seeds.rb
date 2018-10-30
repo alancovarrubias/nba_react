@@ -1,7 +1,8 @@
 
-year = 2018
-builder = Builder::Database.new(year)
-builder.build
+year = 2015
+season = Season.find_by_year(year)
+games = Game.where(id: 73)
+Builder::Quarter::Stats.build(season, games)
 =begin
 builder.build_quarter_stats(Game.where(id: 3882))
 
