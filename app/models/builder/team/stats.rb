@@ -25,6 +25,7 @@ module Builder
       end
 
       def build_stat(team, player_stats, type, games_back=nil)
+        return if player_stats.empty?
         query_hash = { season: @season, game: @game, model: team, games_back: games_back, season_stat: type == "season", period: @period }
         team_stat = ::Stat.find_or_create_by(query_hash)
         team_stat_hash = player_stats.inject {|memo, el| memo.merge(el) {|key, old, new| old + new}}
