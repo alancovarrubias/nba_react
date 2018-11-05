@@ -1,7 +1,7 @@
 
 (2016..2018).each do |year|
   builder = Builder::Database.new(year)
-  builder.build_quarter_stats
+  builder.build
 end
 =begin
 builder.build_quarter_stats(Game.where(id: 3882))
