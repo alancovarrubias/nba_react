@@ -5,6 +5,7 @@ module Builder
       def initialize(play)
         @type = "score"
         @text = play.text
+        puts @text
         parse_play(@text)
       end
 
