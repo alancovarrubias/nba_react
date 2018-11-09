@@ -39,7 +39,7 @@ class Game < ApplicationRecord
   def latest_team_season_stats
     teams = season.teams
     return Hash[teams.map do |team|
-      stat = Stat.where(season_stat: true).where("game_id < ?", game.id).order("game_id DESC").first
+      stat = Stat.season_stats().where("game_id < ?", game.id).order("game_id DESC").first
       [team, stat]
     end]
   end
@@ -47,7 +47,7 @@ class Game < ApplicationRecord
   def latest_team_prev_stats(games_back)
     teams = season.teams
     return Hash[teams.map do |team|
-      stat = Stat.where(games_back: games_back, season_stat: false).where("game_id < ?", game.id).order("game_id DESC").first
+      stat = Stat.prev_stats(games_back).where("game_id < ?", game.id).order("game_id DESC").first
       [team, stat]
     end]
   end

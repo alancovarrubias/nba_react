@@ -70,7 +70,8 @@ module Builder
 =end
     end
 
-    def build_bets
+    def build_bets(games=nil)
+      @games = games ? games : @games
       Builder::Bet::Builder.run(@games)
     end
     

@@ -53,6 +53,15 @@ module Algorithm
     def predict_player_ortg(stat, predicted_poss_percent)
       prev_stats = stat.prev_ranged_stats(predicted_poss_percent, 0.05).includes(:player => :team)
       return 90 if prev_stats.size == 0
+      stats, game_ids, team_ids = previous_stats_data(prev_stats)
+      all_team_stats = Stat.where(period: stat.period, model_type: "Team", game_id: game_ids, season_stat: false, games_back: nil).order(game_id: :desc)
+      team_stats, opp_stats = split_team_stats(all_team_stats, team_ids)
+      stat = Stats::Stat.new(stats, team_stats, opp_stats)
+      ortg = stat.calc_ortg
+      return ortg
+    end
+
+    def previous_stats_data(prev_stats)
       minutes = prev_stats.map(&:mp)
       games_back = 0
       time_played = 0
@@ -61,21 +70,20 @@ module Algorithm
         time_played += minute
         break if time_played > 240.0
       end
-      prev_stats = prev_stats.limit(games_back)
-      prev_game_ids = prev_stats.map(&:game_id)
-      prev_team_ids = prev_stats.map(&:team).map(&:id)
-=begin
-  There's two teams per game, we just gotta differentiate between which stat is which
-=end
-      prev_model_stats = Stat.where(model_type: "Team", game_id: prev_game_ids, season_stat: false, games_back: nil).order(game_id: :desc)
-      prev_team_stats = []
-      prev_opp_stats = []
-      prev_model_stats.each_with_index do |stat, index|
-        stat.model_id == prev_team_ids[index/2] ? prev_team_stats << stat : prev_opp_stats << stat
-      end
-      stat = Stats::Stat.new(prev_stats, prev_team_stats, prev_opp_stats)
-      ortg = stat.calc_ortg
-      return ortg
+      stats = prev_stats.limit(games_back)
+      game_ids = stats.map(&:game_id)
+      team_ids = stats.map(&:team).map(&:id)
+      return stats, game_ids, team_ids
     end
+
+    def split_team_stats(all_team_stats, team_ids)
+      team_stats = []
+      opp_stats = []
+      all_team_stats.each_with_index do |stat, index|
+        stat.model_id == team_ids[index/2] ? team_stats << stat : opp_stats << stat
+      end
+      return team_stats, opp_stats
+    end
+
   end
 end

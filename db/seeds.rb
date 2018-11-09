@@ -1,8 +1,10 @@
 
-(2016..2018).each do |year|
+# (2016..2018).each do |year|
+  year = 2015
   builder = Builder::Database.new(year)
-  builder.build
-end
+  dates = [Date.new(2015, 4, 30)]
+  builder.build_lines(dates)
+# end
 =begin
 builder.build_quarter_stats(Game.where(id: 3882))
 
@@ -15,3 +17,5 @@ builder.build_ratings
 end
 
 =end
+
+# delete 201503160GSW

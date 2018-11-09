@@ -27,11 +27,10 @@ module Builder
         date_str = date.to_s.tr("-", "")
         spread_path = "/betting-odds/nba-basketball/pointspread/#{url_path}?date=#{date_str}"; spread_css = "._2cc9d ._3Nv_7"
         total_path = "/betting-odds/nba-basketball/totals/#{url_path}?date=#{date_str}"; total_css = "._2cc9d span"
-        teams, spreads = get_line_data("spread", spread_path, spread_css)
-        teams, totals = get_line_data("total", total_path, total_css)
         date_games = games.where(date: date)
-        teams.each_with_index do |team, index|
-          game = date_games.find_by(home_team: team)
+        games, spreads = get_line_data("spread", spread_path, spread_css, date_games)
+        games, totals = get_line_data("total", total_path, total_css, date_games)
+        games.each_with_index do |game, index|
           spread = spreads[index]
           total = totals[index]
           line = ::Line.find_or_create_by(game: game, period: period, desc: "opener")
@@ -39,33 +38,32 @@ module Builder
         end
       end
 
-      def get_line_data(type, path, css)
+      def get_line_data(type, path, css, date_games)
         doc = sports_book_review(path)
-        team_data = doc.css("._2nxl1").map do |element|
-          id = element["href"].match(/\d{7}\//)[0].chomp("/")
-          team = get_team(element.text)
-          { id: id, team: team }
+        team_css = "._1ekCo"
+        team_data = doc.css(team_css).map do |element|
+          get_team(element.text)
+        end
+        game_data = team_data.each_slice(2).map do |teams|
+          away_team = teams[0]
+          home_team = teams[1]
+          date_games.find_by(away_team: away_team, home_team: home_team)
         end
         slice_size = type == "total" ? 6 : 2
-        line_data = doc.css(css).each_slice(slice_size).map do |slice|
+        line_data = doc.css(css).each_slice(slice_size)
+        missing_indices = game_data.map.with_index do |game, index|
+          index unless game
+        end.compact
+        game_data.compact!
+        line_data = line_data.reject.with_index do |slice, index|
+          missing_indices.include?(index)
+        end
+        line_data = line_data.map do |slice|
           element = slice[1]
           text = element.text
           get_line_number(type, text) unless text.length == 0
         end
-        teams = []
-        lines = []
-        until team_data.empty?
-          if team_data[0][:id] == team_data[1][:id]
-            team_slice = team_data.shift(2)
-            line_slice = line_data.shift(1)
-            teams << team_slice[1][:team]
-            lines << line_slice[0]
-          else
-            team_data.shift(1)
-            line_data.shift(1)
-          end
-        end
-        return teams, lines
+        return game_data, line_data
       end
 
       def get_team(text)

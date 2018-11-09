@@ -28,6 +28,18 @@ class Stat < ApplicationRecord
     return stats.inject(self.stat_hash) { |mem, hash| mem.merge(hash) { |key, old, new| old + new } }
   end
 
+  def self.game_stats(query={})
+    return Stat.where(games_back: nil, season_stat: false).where(query)
+  end
+
+  def self.season_stats(query={})
+    return Stat.where(season_stat: true).where(query)
+  end
+
+  def self.prev_stats(games_back, query={})
+    return Stat.where(games_back: games_back, season_stat: false).where(query)
+  end
+
   def stats
     query_hash = { season: season, season_stat: season_stat, period: period }
     query_hash.merge!({ games_back: games_back }) unless season_stat
