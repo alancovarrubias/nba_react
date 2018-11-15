@@ -45,7 +45,7 @@ module Builder
         ortg = stat.calc_ortg
         drtg = stat.calc_drtg
         poss_percent = stat.calc_poss_percent
-        stat.update(ortg: ortg, drtg: drtg, poss_percent: poss_percent)
+        stat.update(ortg: ortg, drtg: drtg, poss_percent: poss_percent, calc: true)
       end
     end
   end
