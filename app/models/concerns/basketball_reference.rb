@@ -30,7 +30,7 @@ module BasketballReference
   end
 
   def parse_idstr(element)
-    return element.attributes["data-append-csv"].value
+    return element.child["href"].match(/\w*\d{2}/)[0]
   end
 
   def parse_time(element)

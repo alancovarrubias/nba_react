@@ -8,7 +8,7 @@ module Builder
       if @season
         @teams = @season.teams
         @players = @season.players
-        @games = @season.games
+        @games = @season.games.where("date < ?", Date.today)
       end
     end
 
