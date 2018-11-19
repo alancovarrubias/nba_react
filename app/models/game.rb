@@ -123,20 +123,18 @@ class Game < ApplicationRecord
     hash[:away_team] = game.away_team.name
     hash[:home_team] = game.home_team.name
     hash[:date] = game.date
-=begin
-    bet = game.bets.find_by(period: period, desc: "old")
+    bet = game.bets.find { |bet| period == bet.period && bet.desc == "old" }
     if bet
       hash[:away_pred] = bet.away_prediction ? bet.away_prediction.round(2) : "N/A"
       hash[:home_pred] = bet.home_prediction ? bet.home_prediction.round(2) : "N/A"
       hash[:away_score] = bet.away_score
       hash[:home_score] = bet.home_score
     end
-    line = game.lines.find_by(period: period)
+    line = game.lines.find { |line| period == line.period }
     if line
       hash[:spread] = line.spread
       hash[:total] = line.total
     end
-=end
     return hash
   end
 

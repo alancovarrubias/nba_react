@@ -8,7 +8,7 @@ module Builder
       if @season
         @teams = @season.teams
         @players = @season.players
-        @games = @season.games.where("date < ?", Date.today)
+        @games = @season.games.where("date < ?", Date.yesterday)
       end
     end
 
@@ -75,8 +75,8 @@ module Builder
       Builder::Bet::Builder.run(@games)
     end
     
-    def build_lines(dates=nil)
-      dates = dates ? dates : @games.map(&:date).uniq
+    def build_lines(games=nil)
+      dates = games ? games.map(&:date).uniq : @games.map(&:date).uniq
       Lines::Builder.run(season, @games, dates)
     end
   end

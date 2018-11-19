@@ -5,19 +5,31 @@ import { Link } from "@curi/react-dom"
 
 // Components
 import Table from "../common/Table";
+import BetRows from "./index/BetRows";
 
 // Constants
-import { PERIODS } from "../../const/periods";
+// import { PERIODS } from "../../const/periods";
 
 
-const Index = ({ season, games, period, range, bets, rowClick, onChange, onClick, selectPeriod, rangeChange }) => {
+const Index = ({ season, games, period, range, rowClick, onChange, onClick, selectPeriod, rangeChange }) => {
   const gameHeaders = [
     { text: "Date", width: "16%" },
     "Away Team", "Home Team", "Away Predicted Score", "Home Predicted Score", "Away Score", "Home Score", "Spread", "Total"
   ];
   const gameKeys = ["date", "away_team", "home_team", "away_pred", "home_pred", "away_score", "home_score", "spread", "total"];
-  // const betHeaders = ["", "Wins", "Losses", "Win Percentage",  "Skipped Bets"];
+  const betHeaders = ["", "Wins", "Losses", "Win Percentage",  "Skipped Bets"];
   const gameRows = games[period] || [];
+  const bets = {
+    total_bets: 0,
+    spread: {
+      wins: 0,
+      losses: 0
+    },
+    total: {
+      wins: 0,
+      losses: 0
+    }
+  };
   return (
     <div className="game-index">
       <Row>
@@ -43,6 +55,16 @@ const Index = ({ season, games, period, range, bets, rowClick, onChange, onClick
       </Row>
       <Row>
         <Col lgOffset={4} lg={4} className="mb-3">
+          <table className="table tabel-bordered table-condensed">
+            <thead>
+              <tr>
+                {betHeaders.map(header => <th>{header}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              <BetRows bets={bets} />
+            </tbody>
+          </table>
         </Col>
       </Row>
       <Row>

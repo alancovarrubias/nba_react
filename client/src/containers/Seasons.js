@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchSeasons } from '../actions'
 import SeasonIndex from '../components/seasons/Index'
 
 class Seasons extends Component {

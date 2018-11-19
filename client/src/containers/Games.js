@@ -8,12 +8,19 @@ class Games extends Component {
     super(props);
     this.rowClick = this.rowClick.bind(this);
     this.rangeChange = this.rangeChange.bind(this);
-    this.state = { range: 0 };
   }
 
   componentDidMount() {
     this.seasonId = this.props.response.params.seasonId;
     this.props.dispatch(fetchGames(this.seasonId));
+    this.setState({ range: 0 });
+  }
+  
+  componentWillReceiveProps(props) {
+    const seasonId = props.response.params.seasonId;
+    if (this.seasonId !== seasonId) {
+      this.componentDidMount();
+    }
   }
 
   rowClick(game) {
@@ -27,16 +34,17 @@ class Games extends Component {
   }
 
   render() {
-    return (<GamesIndex {...this.props} rowClick={this.rowClick} rangeChange={this.rangeChange} range={this.state.range} />);
+    return (<GamesIndex {...this.props} rowClick={this.rowClick} rangeChange={this.rangeChange} />);
   }
 }
 
 function mapStateToProps(state) {
-  const { season, games, period } = state;
+  const { season, games, period, range } = state;
   return {
     season,
     games,
-    period
+    period,
+    range
   };
 }
 

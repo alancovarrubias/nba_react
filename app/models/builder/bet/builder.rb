@@ -6,14 +6,15 @@ module Builder
       PERIODS = [0, 1, 2, 3, 4]
       def run(games)
         games.each do |game|
+          puts "Bet #{game.id}"
           PERIODS.each do |period|
+            puts "Period #{period}"
             build_bet(game, period)
           end
         end
       end
 
       def build_bet(game, period)
-        puts "Bet #{game.id}"
         algorithm = Algorithm::Old.new(game, period)
         away_prediction, home_prediction = algorithm.predict_score(10)
         puts away_prediction, home_prediction

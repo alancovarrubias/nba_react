@@ -2,7 +2,12 @@
 # (2016..2018).each do |year|
   year = 2019
   builder = Builder::Database.new(year)
-  builder.build
+  date = Date.new(2018, 11, 14)
+  games = Season.find_by_year(year).games.where("date >= ? AND date < ?", date, Date.yesterday)
+  builder.build_game_stats(games)
+  builder.build_quarter_stats(games)
+  # builder.build_bets(games)
+  # builder.build_lines(games)
 # end
 =begin
 builder.build_quarter_stats(Game.where(id: 3882))

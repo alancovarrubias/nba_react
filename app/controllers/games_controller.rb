@@ -5,9 +5,16 @@ class GamesController < ApiController
   # GET /games
   def index
     @season = Season.find(params[:season_id])
+    game_data = @season.games.where("date < ?", Date.today).preload(:bets, :lines).map do |game|
+      period_hash = {}
+      PERIODS.each do |period|
+        period_hash[period] = game.index_data(period)
+      end
+      period_hash
+    end
     @games = {}
     PERIODS.each do |period|
-      @games[period] = @season.games.map { |game| game.index_data(period) }
+      @games[period] = game_data.map { |data| data[period] }
     end
     @season = @season.as_json
 

@@ -4,6 +4,24 @@ import Game from './containers/Game'
 
 export default [
   {
+    name: "Root",
+    path: "",
+    response() {
+      return {
+        redirectTo: { name: "Seasons" }
+      };
+    }
+  },
+  {
+    name: "Seasons",
+    path: "seasons",
+    response() {
+      return {
+        body: Seasons
+      };
+    }
+  },
+  {
     name: "Seasons",
     path: "seasons",
     response() {

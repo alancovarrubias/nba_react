@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchSeasons } from '../actions'
-import GamesIndex from '../components/games/Index'
 import Navbar from './Navbar'
 
 class Layout extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchSeasons());

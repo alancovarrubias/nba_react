@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import Table from '../common/Table';
 import './Show.css';
 import { Link } from '@curi/react-dom';
-import { PERIODS } from "../../const/periods";
+// import { PERIODS } from "../../const/periods";
 
 const Show = ({ season, game, period }) => {
   const away_team = game.away_team || { players: {} }
@@ -18,7 +18,7 @@ const Show = ({ season, game, period }) => {
   const keys = ["name", "mp", "fgm", "fga", "thpm", "thpa", "ftm", "fta", "orb", "drb", "ast", "stl", "blk", "tov", "pf", "pts", "ortg", "drtg"]
   const away_table = <Table headers={headers} keys={keys} rows={away_players} maxHeight="300px"/>
   const home_table = <Table headers={headers} keys={keys} rows={home_players} maxHeight="300px"/>
-  const options = Object.keys(PERIODS).map(period => <option key={period} value={period}>{PERIODS[period]}</option>);
+  // const options = Object.keys(PERIODS).map(period => <option key={period} value={period}>{PERIODS[period]}</option>);
   return (
         <div className="game-show">
           <Row>
