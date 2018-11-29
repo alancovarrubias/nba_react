@@ -3,7 +3,7 @@ class SeasonsController < ApiController
 
   # GET /seasons
   def index
-    @seasons = Season.all
+    @seasons = Season.all.order(year: :desc)
 
     render json: { seasons: @seasons }
   end

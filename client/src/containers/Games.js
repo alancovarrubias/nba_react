@@ -7,13 +7,11 @@ class Games extends Component {
   constructor(props) {
     super(props);
     this.rowClick = this.rowClick.bind(this);
-    this.rangeChange = this.rangeChange.bind(this);
   }
 
   componentDidMount() {
     this.seasonId = this.props.response.params.seasonId;
     this.props.dispatch(fetchGames(this.seasonId));
-    this.setState({ range: 0 });
   }
   
   componentWillReceiveProps(props) {
@@ -28,10 +26,6 @@ class Games extends Component {
     router.navigate({ name: "Game", params: { seasonId: this.seasonId, gameId: game.id } });
   }
   
-  rangeChange(event) {
-    const range = event.target.value;
-    this.setState({ range });
-  }
 
   render() {
     return (<GamesIndex {...this.props} rowClick={this.rowClick} rangeChange={this.rangeChange} />);

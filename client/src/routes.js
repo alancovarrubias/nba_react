@@ -22,15 +22,6 @@ export default [
     }
   },
   {
-    name: "Seasons",
-    path: "seasons",
-    response() {
-      return {
-        body: Seasons
-      };
-    }
-  },
-  {
     name: "Games",
     path: "seasons/:seasonId/games",
     resolve: {
