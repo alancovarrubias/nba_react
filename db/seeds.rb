@@ -1,8 +1,8 @@
 
-# (2016..2019).each do |year|
-year = 2016
-builder = Builder::Database.new(year)
-builder.build_bets
+(2015..2018).each do |year|
+  builder = Builder::Database.new(year)
+  builder.build_bets
+end
 # end
 =begin
   date = Date.new(2018, 11, 14)
