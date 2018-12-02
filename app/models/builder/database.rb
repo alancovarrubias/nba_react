@@ -1,6 +1,6 @@
 module Builder
   class Database
-    attr_reader :year, :season, :teams, :players
+    attr_reader :year, :season, :teams, :players, :games
     include BasketballReference
     def initialize(year)
       @year = year
@@ -72,6 +72,7 @@ module Builder
 
     def build_bets(games=nil)
       @games = games ? games : @games
+      games.select! { |game| game.bets.size != 5 }
       Builder::Bet::Builder.run(@games)
     end
     

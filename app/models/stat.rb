@@ -88,6 +88,8 @@ class Stat < ApplicationRecord
     hash = Hash[self.attributes.map{|key, value| [key.to_sym, value]}.select{|key, value| STATS.include?(key)}]
     hash[:name] = self.name
     hash[:mp] = (self.sp / 60.0).round(2)
+    hash[:ortg] = hash[:ortg].round(2)
+    hash[:drtg] = hash[:drtg].round(2)
     return hash
   end
 
