@@ -72,8 +72,7 @@ module Builder
 
     def build_bets(games=nil)
       @games = games ? games : @games
-      @games.select! { |game| game.bets.size != 5 }
-      Builder::Bet::Builder.run(@games)
+      Builder::Bet::Builder.run(@games.select! { |game| game.bets.size != 5 })
     end
     
     def build_lines(games=nil)
