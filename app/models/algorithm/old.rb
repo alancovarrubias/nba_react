@@ -33,8 +33,8 @@ module Algorithm
       home_team_season = @game.season_home_team_stat(@period)
       away_team_season_poss = away_team_season.tot_poss/away_team_season.games_back
       home_team_season_poss = home_team_season.tot_poss/home_team_season.games_back
-      away_team_prev = @game.prev_away_team_stat(games_back)
-      home_team_prev = @game.prev_home_team_stat(games_back)
+      away_team_prev = @game.prev_away_team_stat(games_back, @period)
+      home_team_prev = @game.prev_home_team_stat(games_back, @period)
       away_team_prev_poss = away_team_prev.tot_poss/games_back
       home_team_prev_poss = home_team_prev.tot_poss/games_back
 

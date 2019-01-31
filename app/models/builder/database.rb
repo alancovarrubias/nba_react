@@ -1,6 +1,6 @@
 module Builder
   class Database
-    attr_reader :year, :season, :teams, :players
+    attr_reader :year, :season, :teams, :players, :games
     include BasketballReference
     def initialize(year)
       @year = year
@@ -26,6 +26,15 @@ module Builder
 =end
     end
 
+    def daily_update
+      build_ratings
+      build_game_stats
+      build_quarter_stats
+      build_ratings
+      build_bets
+      build_lines
+    end
+
     def build_seasons
       Builder::Season::Builder.run(year)
       @season = ::Season.find_by_year(year)
@@ -48,12 +57,12 @@ module Builder
 
     def build_game_stats(games=nil)
       games = games ? games : @games
-      Builder::Game::Stats.build(@season, games)
+      Builder::Game::Stats.build(@season, games.select { |game| game.period_stats.size == 0 })
     end
 
     def build_quarter_stats(games=nil)
       games = games ? games : @games
-      Builder::Quarter::Stats.build(@season, games)
+      Builder::Quarter::Stats.build(@season, games.select { |game| game.period_stats(4).size == 0 })
     end
 
     def build_ratings
@@ -72,7 +81,7 @@ module Builder
 
     def build_bets(games=nil)
       @games = games ? games : @games
-      Builder::Bet::Builder.run(@games)
+      Builder::Bet::Builder.run(@games.select { |game| game.bets.size != 5 })
     end
     
     def build_lines(games=nil)
