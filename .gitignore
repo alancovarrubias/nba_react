@@ -21,3 +21,6 @@
 # Ignore Byebug command history file.
 .byebug_history
 .rbenv-vars
+
+# Ignore rspec previous run file.
+/spec/examples.txt

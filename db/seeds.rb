@@ -1,7 +1,7 @@
 
 (2015..2018).each do |year|
   builder = Builder::Database.new(year)
-  builder.build_bets
+  builder.build_players
 end
 # end
 =begin
