@@ -3,12 +3,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  scope '/api' do
-    resources :seasons do
-      resources :teams
-      resources :players
-      resources :games
-    end
+  resources :seasons do
+    resources :teams
+    resources :players
+    resources :games
   end
   get '*path', to: "application#fallback_index_html", constraints: ->(request) do
     !request.xhr? && request.format.html?
